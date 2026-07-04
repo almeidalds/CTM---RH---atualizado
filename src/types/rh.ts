@@ -29,6 +29,17 @@ export type RhEmployee = {
   diasVendidosFerias: number;
   diasTotaisFerias: number;
   periodosFerias: VacationPeriod[];
+
+  // Optional fields for contract renewal metadata (usually stored in a separate table/entity)
+  statusRenovacao?: import("./rh").ContractRenewalStatus;
+  responsavelAnalise?: string;
+  dataLimiteDecisao?: string;
+  recomendacaoContrato?: string;
+  observacoesContrato?: string;
+
+  pendencias?: import("./rh").DataIssue[];
+  direitoAdquirido?: boolean;
+  saldoFeriasDisponivel?: number;
 };
 
 export type VacationFilters = {
@@ -182,3 +193,12 @@ export type TimelineEvent = {
   categoria: TimelineEventCategory;
 };
 
+
+export type AbsenceItem = {
+  id?: string;
+  nomeFuncionario?: string;
+  nome?: string;
+  dataInicio: string;
+  dataFim: string;
+  tipo?: string;
+};

@@ -21,7 +21,7 @@ import {
   UserCheck
 } from "lucide-react";
 import { RhEmployee, VacationFilters, VacationPeriod } from "../types/rh";
-import { formatarDataBR } from "../utils/dateUtils";
+import { formatarDataBR, getToday, formatarDataCurta } from "../utils/dateUtils";
 import {
   calcularTempoTrabalho,
   calcularStatusFerias,
@@ -164,11 +164,14 @@ export const VacationsPage: React.FC<VacationsPageProps> = (props) => {
       });
     }
 
-    // 3. Férias próximas (Iniciando nos próximos 30 dias de Julho de 2026: 03/Jul/26 a 02/Ago/26)
+    // 3. Férias próximas (Iniciando nos próximos 30 dias)
+    const today = getToday();
+    const limit = formatarDataCurta(new Date(new Date().setDate(new Date().getDate() + 30)));
+
     const proximasFerias = activeEmployees.filter((emp) => {
       return emp.periodosFerias?.some((p) => {
         const start = p.dataInicio;
-        return start >= "2026-07-03" && start <= "2026-08-02";
+        return start >= today && start <= limit;
       });
     });
     if (proximasFerias.length > 0) {

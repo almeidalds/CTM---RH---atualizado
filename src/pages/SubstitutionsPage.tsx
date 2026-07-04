@@ -22,12 +22,12 @@ import {
   Trash2,
   AlertTriangle
 } from "lucide-react";
-import { RhEmployee, Substitution, SubstitutionReason, SubstitutionStatus } from "../types/rh";
+import { RhEmployee, Substitution, SubstitutionReason, SubstitutionStatus, AbsenceItem } from "../types/rh";
 import { formatarDataBR, calcularDiasRestantes } from "../utils/dateUtils";
 import { obterSubstituicoes, salvarSubstituicoes } from "../services/additionalDataSource";
 import { calcularStatusFerias } from "../utils/vacationUtils";
 import { SubstitutionSummaryCard } from "../components/SummaryCard";
-import { validarLimiteAusencias, AbsenceItem, gerarDatasNoIntervalo } from "../utils/absenceUtils";
+import { validarLimiteAusencias,  gerarDatasNoIntervalo } from "../utils/absenceUtils";
 
 interface SubstitutionsPageProps {
   employees: RhEmployee[];
@@ -221,7 +221,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
   const handleCreateSubstitution = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formAbsentName || !formStart || !formEnd) {
-      alert("Por favor, preencha os campos obrigatórios (Instrutor ausente, Início e Término).");
+      // Missing required fields
       return;
     }
 
@@ -254,9 +254,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
   };
 
   const handleDeleteSub = (id: string) => {
-    if (window.confirm("Deseja realmente remover esta substituição?")) {
-      handleSaveSubstitutions(subs.filter((s) => s.recordId !== id));
-    }
+    handleSaveSubstitutions(subs.filter((s) => s.recordId !== id));
   };
 
   const resetForm = () => {

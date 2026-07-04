@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { 
   BarChart, 
   AlertTriangle, 
@@ -10,15 +10,23 @@ import {
   UserMinus, 
   ListTodo
 } from 'lucide-react';
-import { RhEmployee, VacationPeriod } from '../types/rh';
+import { RhEmployee, VacationPeriod, Substitution } from '../types/rh';
 import { calcularStatusFerias } from '../utils/vacationUtils';
 import { getToday } from '../utils/dateUtils';
+import { substitutionRepository } from '../repositories/substitutionRepository';
+import { calcularMapaOcupacaoDias } from '../utils/absenceUtils';
 
 interface Props {
   employees: RhEmployee[];
 }
 
 export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
+  const [substitutions, setSubstitutions] = useState<Substitution[]>([]);
+
+  useEffect(() => {
+    setSubstitutions(substitutionRepository.getAll());
+  }, []);
+
   const stats = useMemo(() => {
     const ativos = employees.filter(e => e.statusFuncionario === 'Ativo');
     const pendencias = employees.filter(e => e.pendencias && e.pendencias.length > 0);
@@ -31,12 +39,20 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
     let feriasMarcadas = 0;
     let feriasVendidas = 0;
 
+    const ausenciasParaOcupacao: { dataInicio: string; dataFim: string }[] = [];
+
     ativos.forEach(e => {
       const status = calcularStatusFerias(e);
       if (status === 'Férias críticas') feriasCriticas++;
       if (status === 'Apto para férias') aptos++;
       if (status === 'Férias marcadas' || status === 'Férias em andamento' || status === 'Férias parcialmente vendidas') feriasMarcadas++;
       if (e.feriasVendidas || e.diasVendidosFerias > 0) feriasVendidas++;
+
+      e.periodosFerias?.forEach(p => {
+        if (p.dataInicio && p.dataFim) {
+          ausenciasParaOcupacao.push({ dataInicio: p.dataInicio, dataFim: p.dataFim });
+        }
+      });
     });
 
     // Saídas próximas 30 dias
@@ -53,7 +69,15 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
     const d15Str = d15.toISOString().split('T')[0];
     const contratosCriticos = ativos.filter(e => e.dataTerminoReal && e.dataTerminoReal >= today && e.dataTerminoReal <= d15Str).length;
 
-    // TODO: get substitutions and absence limits (mocking for now, will connect properly if needed, but since we only have employees list here, we'll approximate or use static for missing external modules, wait, substitutions are in another state. The requirement allows mock data.)
+    // Substitutions
+    const substPendentes = substitutions.filter(s => s.status === 'Pendente' || s.status === 'Sem substituto').length;
+
+    // Mapa Ocupacao Dias - calculate days hitting limit 8
+    const mapa = calcularMapaOcupacaoDias(ausenciasParaOcupacao);
+    let diasLimite = 0;
+    Object.values(mapa).forEach(names => {
+      if (names.length >= 8) diasLimite++;
+    });
 
     return {
       total: employees.length,
@@ -67,10 +91,10 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
       feriasVendidas,
       saidas30d: saidas30d.length,
       contratosCriticos,
-      substPendentes: 4, // Mock
-      periodosLimite: 2 // Mock
+      substPendentes,
+      periodosLimite: diasLimite 
     };
-  }, [employees]);
+  }, [employees, substitutions]);
 
   return (
     <div className="w-full h-full p-4 lg:p-8 animate-fade-in pb-24">

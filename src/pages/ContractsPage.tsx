@@ -99,7 +99,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
       statusRenovacao: newStatus,
       responsavelAnalise: c.responsavelAnalise || "RH Coordenação",
       dataLimiteDecisao: c.dataLimiteDecisao || new Date().toISOString().split("T")[0]
-    } as any;
+    };
 
     onUpdateEmployee(updated);
   };
@@ -116,7 +116,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
       observacoesContrato: obsText,
       responsavelAnalise: analystName || "RH Analista",
       dataLimiteDecisao: decisionLimit || editingContract.dataLimiteDecisao
-    } as any;
+    };
 
     onUpdateEmployee(updated);
     setEditingContract(null);

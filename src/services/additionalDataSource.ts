@@ -5,7 +5,7 @@ import { getToday, getMonthOffset } from "../utils/dateUtils";
  */
 
 import { RhEmployee, Substitution, ContractRenewal, SystemAlert, TimelineEvent, SubstitutionReason, SubstitutionStatus, ContractRenewalStatus, SystemAlertStatus } from "../types/rh";
-import { formatarDataBR, calcularDiasRestantes } from "../utils/dateUtils";
+import { formatarDataBR, formatarDataCurta, calcularDiasRestantes } from "../utils/dateUtils";
 import { calcularStatusFerias, calcularDiasVendidos, calcularDiasTirados } from "../utils/vacationUtils";
 
 const SUBSTITUTIONS_KEY = "ctm_rh_substitutions";
@@ -215,10 +215,10 @@ export function obterContratos(employees: RhEmployee[]): ContractRenewal[] {
       }
 
       // Se o funcionário já tem esses dados persistidos nele, usa eles!
-      const statusRenovacao = (emp as any).statusRenovacao as ContractRenewalStatus || status;
-      const responsavelAnalise = (emp as any).responsavelAnalise || responsavel;
-      const recomendacaoContrato = (emp as any).recomendacaoContrato || recomendacao;
-      const observacoesContrato = (emp as any).observacoesContrato || "";
+      const statusRenovacao = emp.statusRenovacao as ContractRenewalStatus || status;
+      const responsavelAnalise = emp.responsavelAnalise || responsavel;
+      const recomendacaoContrato = emp.recomendacaoContrato || recomendacao;
+      const observacoesContrato = emp.observacoesContrato || "";
 
       // Data limite para decisão: Geralmente 30 dias antes do término de contrato, ou hoje se já estiver vencendo
       let dataLimite = "";
@@ -230,7 +230,7 @@ export function obterContratos(employees: RhEmployee[]): ContractRenewal[] {
         dataLimite = getToday();
       }
 
-      const dataLimiteDecisao = (emp as any).dataLimiteDecisao || dataLimite;
+      const dataLimiteDecisao = emp.dataLimiteDecisao || dataLimite;
 
       return {
         recordId: emp.recordId,
@@ -337,7 +337,7 @@ export function gerarAlertasSistema(
         severidade: "Crítico",
         funcionarioRelacionado: emp.nome,
         dataCriacao: hojeStr,
-        prazoRecomendado: "2026-08-01",
+        prazoRecomendado: formatarDataCurta(new Date(new Date().setMonth(new Date().getMonth() + 1))), // Próximo mês
         status: "Novo",
         acaoRecomendada: "Agendar escala de gozo de férias obrigatória no próximo bimestre."
       });
@@ -350,12 +350,15 @@ export function gerarAlertasSistema(
         severidade: "Baixo",
         funcionarioRelacionado: emp.nome,
         dataCriacao: hojeStr,
-        prazoRecomendado: "2026-12-31",
+        prazoRecomendado: formatarDataCurta(new Date(new Date().getFullYear(), 11, 31)), // Fim do ano
         status: "Novo",
         acaoRecomendada: "Coletar preferência de datas e integrar ao calendário de substituições preventivo."
       });
     }
   });
+
+  const quinzeDias = formatarDataCurta(new Date(new Date().setDate(new Date().getDate() + 15)));
+  const trintaDias = formatarDataCurta(new Date(new Date().setDate(new Date().getDate() + 30)));
 
   // 3. Substituições sem responsável ou pendentes
   substituicoes.forEach((sub) => {
@@ -415,7 +418,7 @@ export function gerarAlertasSistema(
         severidade: "Alto",
         funcionarioRelacionado: emp.nome,
         dataCriacao: hojeStr,
-        prazoRecomendado: "2026-07-15",
+        prazoRecomendado: quinzeDias,
         status: "Novo",
         acaoRecomendada: "Atribuir a zona de lotação correta (Sul, Norte, Leste, Oeste)."
       });
@@ -429,7 +432,7 @@ export function gerarAlertasSistema(
         severidade: "Alto",
         funcionarioRelacionado: emp.nome,
         dataCriacao: hojeStr,
-        prazoRecomendado: "2026-07-15",
+        prazoRecomendado: quinzeDias,
         status: "Novo",
         acaoRecomendada: "Especificar se o instrutor ministra aulas no período da Manhã, Tarde ou Noite."
       });
@@ -443,7 +446,7 @@ export function gerarAlertasSistema(
         severidade: "Alto",
         funcionarioRelacionado: emp.nome,
         dataCriacao: hojeStr,
-        prazoRecomendado: "2026-07-15",
+        prazoRecomendado: quinzeDias,
         status: "Novo",
         acaoRecomendada: "Vincular a grade de idiomas (Inglês, Espanhol, Mandarim, etc.) que o instrutor está apto a lecionar."
       });
@@ -470,7 +473,7 @@ export function gerarAlertasSistema(
         categoria: "Operacional",
         severidade: "Crítico",
         dataCriacao: hojeStr,
-        prazoRecomendado: "2026-08-15",
+        prazoRecomendado: trintaDias,
         status: "Novo",
         acaoRecomendada: "Providenciar recrutamento externo ou capacitação interna preventiva para novas licenças."
       });

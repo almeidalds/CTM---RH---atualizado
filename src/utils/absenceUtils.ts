@@ -1,115 +1,123 @@
-import { getToday, getMonthOffset } from "./dateUtils";
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { VacationPeriod, Substitution } from "../types/rh";
+import { differenceInDays, addDays, isDateBetween, formatarDataBR, getToday, getMonthOffset } from "./dateUtils";
+import { AbsenceItem } from "../types/rh"; // Use an appropriate interface
 
-export interface AbsenceItem {
-  id: string; // Unique absence id (e.g. employeeId-index or sub-id)
-  nome: string; // Employee name
-  tipo: string; // "Férias" | "Doença" | "Treinamento" | "Viagem" | etc.
-  dataInicio: string; // YYYY-MM-DD
-  dataFim: string; // YYYY-MM-DD
-}
-
-export interface ValidadorRetorno {
+export interface AbsenceValidationResult {
   permitido: boolean;
   limiteAtingido: boolean;
   diasCriticos: string[];
   diasNoLimite: string[];
   maiorQuantidadeSimultanea: number;
   mensagem: string;
+  detalhesPorDia: {
+    data: string;
+    quantidadeAtual: number;
+    quantidadeComNovaAusencia: number;
+    nomesAusentes: string[];
+    situacao: "Disponível" | "Limite atingido" | "Bloqueado";
+  }[];
 }
 
-/**
- * Função para gerar todas as datas (YYYY-MM-DD) em um intervalo inclusive.
- */
-export function gerarDatasNoIntervalo(dataInicio: string, dataFim: string): string[] {
-  const datas: string[] = [];
-  const start = new Date(dataInicio);
-  const end = new Date(dataFim);
-
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-    return datas;
-  }
-
-  const cursor = new Date(start);
-  while (cursor <= end) {
-    const yyyy = cursor.getFullYear();
-    const mm = String(cursor.getMonth() + 1).padStart(2, "0");
-    const dd = String(cursor.getDate()).padStart(2, "0");
-    datas.push(`${yyyy}-${mm}-${dd}`);
-    cursor.setDate(cursor.getDate() + 1);
-  }
-
-  return datas;
-}
-
-/**
- * MÓDULO 7 - Função obrigatória validarLimiteAusencias
- * Valida se uma nova ausência viola a regra operacional de no máximo 8 pessoas ausentes no mesmo período.
- */
 export function validarLimiteAusencias(
-  novaAusencia: { dataInicio: string; dataFim: string; nome: string; tipo: string },
-  ausenciasExistentes: AbsenceItem[],
-  limiteMaximo = 8
-): ValidadorRetorno {
-  const diasDaNova = gerarDatasNoIntervalo(novaAusencia.dataInicio, novaAusencia.dataFim);
+  novaAusencia: { dataInicio: string; dataFim: string },
+  ausenciasExistentes: { dataInicio: string; dataFim: string; nomeFuncionario?: string; nome?: string }[],
+  limiteMaximo: number = 8
+): AbsenceValidationResult {
+  const { dataInicio, dataFim } = novaAusencia;
+  
+  if (!dataInicio || !dataFim || dataInicio > dataFim) {
+    return {
+      permitido: false,
+      limiteAtingido: false,
+      diasCriticos: [],
+      diasNoLimite: [],
+      maiorQuantidadeSimultanea: 0,
+      mensagem: "Período inválido.",
+      detalhesPorDia: []
+    };
+  }
+
+  const diasTotais = differenceInDays(dataInicio, dataFim) + 1;
+  const detalhesPorDia: AbsenceValidationResult["detalhesPorDia"] = [];
+  
+  let maiorQuantidadeSimultanea = 0;
+  let temDiaBloqueado = false;
+  let temDiaNoLimite = false;
   const diasCriticos: string[] = [];
   const diasNoLimite: string[] = [];
-  let maiorQuantidadeSimultanea = 0;
 
-  // Para cada dia da nova ausência, contamos as ausências existentes que cobrem esse dia
-  diasDaNova.forEach((dia) => {
-    let contagem = 0;
-    ausenciasExistentes.forEach((existente) => {
-      // Evitar contar a mesma pessoa se houver sobreposição interna ou duplicata
-      if (existente.dataInicio <= dia && existente.dataFim >= dia) {
-        contagem++;
-      }
+  for (let i = 0; i < diasTotais; i++) {
+    const currentDate = addDays(dataInicio, i);
+    
+    // Find who is absent on this specific day
+    const pessoasAusentesNoDia = ausenciasExistentes.filter(a => {
+      return isDateBetween(currentDate, a.dataInicio, a.dataFim);
     });
 
-    const totalComNova = contagem + 1;
-    if (totalComNova > maiorQuantidadeSimultanea) {
-      maiorQuantidadeSimultanea = totalComNova;
+    const nomesAusentes = pessoasAusentesNoDia.map(a => a.nomeFuncionario || a.nome || "Desconhecido");
+    const quantidadeAtual = nomesAusentes.length;
+    const quantidadeComNovaAusencia = quantidadeAtual + 1;
+    
+    if (quantidadeComNovaAusencia > maiorQuantidadeSimultanea) {
+      maiorQuantidadeSimultanea = quantidadeComNovaAusencia;
     }
 
-    if (totalComNova > limiteMaximo) {
-      diasCriticos.push(dia);
-    } else if (totalComNova === limiteMaximo) {
-      diasNoLimite.push(dia);
+    let situacao: "Disponível" | "Limite atingido" | "Bloqueado" = "Disponível";
+    
+    if (quantidadeComNovaAusencia > limiteMaximo) {
+      situacao = "Bloqueado";
+      temDiaBloqueado = true;
+      diasCriticos.push(currentDate);
+    } else if (quantidadeComNovaAusencia === limiteMaximo) {
+      situacao = "Limite atingido";
+      temDiaNoLimite = true;
+      diasNoLimite.push(currentDate);
     }
-  });
 
-  const permitido = diasCriticos.length === 0;
-  const limiteAtingido = diasNoLimite.length > 0 && permitido;
+    detalhesPorDia.push({
+      data: formatarDataBR(currentDate),
+      quantidadeAtual,
+      quantidadeComNovaAusencia,
+      nomesAusentes,
+      situacao
+    });
+  }
 
-  let mensagem = "";
+  const permitido = !temDiaBloqueado;
+  let mensagem = "Período disponível para registro.";
+  
   if (!permitido) {
-    mensagem = `Não é possível marcar este período. O limite de ${limiteMaximo} pessoas ausentes simultaneamente será ultrapassado nos dias: [${diasCriticos.map(d => d.split("-").reverse().join("/")).join(", ")}].`;
-  } else if (limiteAtingido) {
-    mensagem = `Atenção: este período atingirá o limite de ${limiteMaximo} pessoas ausentes simultaneamente.`;
-  } else {
-    mensagem = `Período disponível. Há no máximo ${maiorQuantidadeSimultanea} pessoas ausentes neste intervalo.`;
+    mensagem = `Bloqueado: O limite de ${limiteMaximo} ausências será ultrapassado em ${diasCriticos.length} dia(s).`;
+  } else if (temDiaNoLimite) {
+    mensagem = `Atenção: O limite máximo de ${limiteMaximo} pessoas será atingido em ${diasNoLimite.length} dia(s) neste período.`;
   }
 
   return {
     permitido,
-    limiteAtingido,
+    limiteAtingido: temDiaNoLimite,
     diasCriticos,
     diasNoLimite,
     maiorQuantidadeSimultanea,
-    mensagem
+    mensagem,
+    detalhesPorDia
   };
 }
 
-/**
- * Retorna o mapa de ausências por dia (como dicionário Record<dia, nomes[]>) dentro de uma janela operacional definida.
- */
+export function gerarDatasNoIntervalo(dataInicio: string, dataFim: string): string[] {
+  const diasTotais = differenceInDays(dataInicio, dataFim) + 1;
+  const datas: string[] = [];
+  for (let i = 0; i < diasTotais; i++) {
+    datas.push(addDays(dataInicio, i));
+  }
+  return datas;
+}
+
 export function calcularMapaOcupacaoDias(
-  ausencias: AbsenceItem[],
+  ausencias: { dataInicio: string; dataFim: string; nome?: string; nomeFuncionario?: string }[],
   dataInicioJanela = getToday(),
   dataFimJanela = getMonthOffset(6) + "-31"
 ): Record<string, string[]> {
@@ -121,7 +129,7 @@ export function calcularMapaOcupacaoDias(
       (a) => a.dataInicio <= dia && a.dataFim >= dia
     );
     if (ausentes.length > 0) {
-      mapa[dia] = ausentes.map((a) => a.nome);
+      mapa[dia] = ausentes.map((a) => a.nome || a.nomeFuncionario || "Desconhecido");
     }
   });
 

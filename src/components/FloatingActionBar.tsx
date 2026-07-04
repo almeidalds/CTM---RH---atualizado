@@ -67,10 +67,8 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
   };
 
   const handleReset = () => {
-    if (window.confirm("Deseja redefinir todos os cadastros para os valores iniciais? Suas alterações locais serão perdidas.")) {
-      onResetData();
-      setIsOpen(false);
-    }
+    onResetData();
+    setIsOpen(false);
   };
 
   return (

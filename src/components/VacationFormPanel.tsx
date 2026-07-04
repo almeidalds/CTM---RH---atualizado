@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { X, Save, AlertTriangle, Calendar, Users, Plane, Link } from 'lucide-react';
+import { X, Save, AlertTriangle, Calendar, Users, Plane, Link, CheckCircle, Info } from 'lucide-react';
 import { RhEmployee, VacationPeriod } from '../types/rh';
-import { validarLimiteAusencias } from '../utils/vacationUtils';
-import { getToday } from '../utils/dateUtils';
+import { validarLimiteAusencias } from '../utils/absenceUtils';
 
 interface Props {
   employee: RhEmployee | null;
@@ -54,25 +53,42 @@ export const VacationFormPanel: React.FC<Props> = ({ employee, allEmployees, onC
     setPeriods(newPeriods);
   };
 
+  // Convert all employees' vacations to AbsenceItems
+  const allAbsences = useMemo(() => {
+    const list: { dataInicio: string; dataFim: string; nome: string }[] = [];
+    allEmployees.forEach(emp => {
+      if (emp.recordId !== employee?.recordId && emp.periodosFerias) {
+        emp.periodosFerias.forEach(pf => {
+          if (pf.dataInicio && pf.dataFim) {
+            list.push({
+              dataInicio: pf.dataInicio,
+              dataFim: pf.dataFim,
+              nome: emp.nome
+            });
+          }
+        });
+      }
+    });
+    return list;
+  }, [allEmployees, employee]);
+
   const { totalDays, allValid, validations } = useMemo(() => {
     let total = 0;
     let allValid = true;
     const validations = periods.map(p => {
-      if (!p.dataInicio || !p.dataFim) return { isValid: true, message: 'Selecione as datas.', exceedDays: [] };
+      if (!p.dataInicio || !p.dataFim) return { isValid: true, result: null };
       total += p.dias;
       
-      const val = validarLimiteAusencias(p.dataInicio, p.dataFim, allEmployees.filter(e => e.recordId !== employee?.recordId), 8);
-      if (!val.isValid) allValid = false;
+      const val = validarLimiteAusencias({ dataInicio: p.dataInicio, dataFim: p.dataFim }, allAbsences, 8);
+      if (!val.permitido) allValid = false;
       
       return {
-        isValid: val.isValid,
-        message: val.isValid ? `Período disponível.` : `Limite atingido!`,
-        exceedDays: val.exceedDays,
-        days: val.days
+        isValid: val.permitido,
+        result: val
       };
     });
     return { totalDays: total, allValid, validations };
-  }, [periods, allEmployees, employee]);
+  }, [periods, allAbsences]);
 
   if (!employee) return null;
 
@@ -87,6 +103,7 @@ export const VacationFormPanel: React.FC<Props> = ({ employee, allEmployees, onC
     };
     onSave(updated, autoSubst);
   };
+
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
@@ -135,17 +152,49 @@ export const VacationFormPanel: React.FC<Props> = ({ employee, allEmployees, onC
                   </div>
                 </div>
 
-                {p.dataInicio && p.dataFim && (
-                  <div className={`p-2.5 rounded-lg border text-xs ${validations[idx]?.isValid ? 'bg-emerald-50 border-emerald-100 text-emerald-700' : 'bg-rose-50 border-rose-100 text-rose-700'}`}>
-                    <div className="flex items-center gap-1.5 mb-1">
-                      {validations[idx]?.isValid ? <Calendar className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5" />}
-                      <span className="font-bold">{validations[idx]?.message} ({p.dias} dias)</span>
+                {p.dataInicio && p.dataFim && validations[idx]?.result && (
+                  <div className={`p-4 rounded-xl border text-xs ${
+                    validations[idx].result?.permitido 
+                      ? validations[idx].result?.limiteAtingido 
+                        ? 'bg-amber-50 border-amber-200 text-amber-800'
+                        : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                      : 'bg-rose-50 border-rose-200 text-rose-800'
+                  }`}>
+                    <div className="flex items-center justify-between mb-3 border-b border-black/5 pb-2">
+                      <div className="flex items-center gap-2">
+                        {validations[idx].result?.permitido ? (
+                           validations[idx].result?.limiteAtingido ? <AlertTriangle className="w-4 h-4 text-amber-600" /> : <CheckCircle className="w-4 h-4 text-emerald-600" />
+                        ) : <AlertTriangle className="w-4 h-4 text-rose-600" />}
+                        <span className="font-extrabold text-sm tracking-tight">{validations[idx].result?.mensagem}</span>
+                      </div>
+                      <span className="font-bold bg-white/50 px-2 py-1 rounded text-[10px] uppercase">
+                        Máx. {validations[idx].result?.maiorQuantidadeSimultanea}/8 ausentes
+                      </span>
                     </div>
-                    {!validations[idx]?.isValid && (
-                      <p className="text-[10px] opacity-80 mt-1">
-                        O limite de 8 ausentes foi ultrapassado nos dias: {validations[idx]?.exceedDays.join(', ')}
-                      </p>
-                    )}
+                    
+                    <div className="space-y-1.5 max-h-32 overflow-y-auto pr-1 custom-scrollbar">
+                      {validations[idx].result?.detalhesPorDia.map((detalhe, i) => (
+                        <div key={i} className={`flex items-center justify-between p-1.5 rounded-md ${
+                          detalhe.situacao === 'Bloqueado' ? 'bg-rose-100/50 text-rose-700' :
+                          detalhe.situacao === 'Limite atingido' ? 'bg-amber-100/50 text-amber-700' :
+                          'hover:bg-white/40'
+                        }`}>
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono font-bold text-[10px] opacity-70 w-16">{detalhe.data}</span>
+                            <span className="font-semibold text-[10px]">
+                              {detalhe.quantidadeAtual} + 1 = <strong className="text-xs">{detalhe.quantidadeComNovaAusencia}</strong>
+                            </span>
+                          </div>
+                          <div className="text-right">
+                            <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${
+                              detalhe.situacao === 'Bloqueado' ? 'bg-rose-200 text-rose-800' :
+                              detalhe.situacao === 'Limite atingido' ? 'bg-amber-200 text-amber-800' :
+                              'bg-emerald-200/50 text-emerald-700'
+                            }`}>{detalhe.situacao}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

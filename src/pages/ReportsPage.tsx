@@ -218,9 +218,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
           {onResetData && (
             <button
               onClick={() => {
-                if (window.confirm("Deseja redefinir os dados para os valores fictícios padrões?")) {
-                  handleReset();
-                }
+                handleReset();
               }}
               className="bg-white hover:bg-lavender/10 text-slate-700 text-[11px] font-bold py-2.5 px-4.5 rounded-full border border-lavender transition-all active:scale-95 cursor-pointer"
             >
@@ -473,18 +471,18 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
           {/* Tab buttons */}
           <div className="flex flex-wrap gap-1.5 bg-slate-50 border border-lavender/60 p-1 rounded-2xl">
             {[
-              { id: "idiomas", label: "Idiomas", icon: Globe },
-              { id: "zonas", label: "Regiões (Zonas)", icon: MapPin },
-              { id: "turnos", label: "Turnos", icon: Clock },
-              { id: "risco", label: "Riscos", icon: ShieldAlert },
-              { id: "status", label: "Status", icon: Layers3 },
+              { id: "idiomas" as const, label: "Idiomas", icon: Globe },
+              { id: "zonas" as const, label: "Regiões (Zonas)", icon: MapPin },
+              { id: "turnos" as const, label: "Turnos", icon: Clock },
+              { id: "risco" as const, label: "Riscos", icon: ShieldAlert },
+              { id: "status" as const, label: "Status", icon: Layers3 },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeChartTab === tab.id;
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveChartTab(tab.id as any)}
+                  onClick={() => setActiveChartTab(tab.id)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     isActive
                       ? "bg-white text-yinmn shadow-xs border border-lavender/40"

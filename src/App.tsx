@@ -247,10 +247,25 @@ export default function App() {
               {scheduleSubTab === "vacations" && (
                 <VacationsPage employees={employees} onSave={(updated, createSubst) => {
                 handleSaveEmployee(updated);
-                if (createSubst) {
-                  // We would trigger a substitution flow here. Since substitutions are mocked in additionalDataSource, 
-                  // we just change tab to substitutions for now to represent the flow conceptually.
-                  setScheduleSubTab("substitutions");
+                if (createSubst && updated.periodosFerias && updated.periodosFerias.length > 0) {
+                  // Trigger substitution creation
+                  import("./repositories/substitutionRepository").then(({ substitutionRepository }) => {
+                    const lastPeriod = updated.periodosFerias[updated.periodosFerias.length - 1];
+                    substitutionRepository.create({
+                      instrutorAusente: updated.nome,
+                      motivo: "Férias",
+                      dataInicio: lastPeriod.dataInicio,
+                      dataFim: lastPeriod.dataFim,
+                      dias: lastPeriod.dias,
+                      idioma: updated.idiomas?.[0] || "Não informado",
+                      zona: updated.zona,
+                      turno: updated.turno,
+                      substituto: "",
+                      status: "Pendente",
+                      observacoes: "Substituição criada automaticamente a partir do registro de férias."
+                    });
+                    setScheduleSubTab("substitutions");
+                  });
                 }
               }} />
               )}

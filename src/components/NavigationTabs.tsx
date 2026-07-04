@@ -97,11 +97,11 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
               <Sparkles className="w-5 h-5 text-jordy animate-pulse" />
             </div>
             <div>
-              <h1 className="text-xl font-extrabold tracking-tight text-oxford leading-none flex items-center gap-0.5">
-                fuse<span className="text-jordy font-black">.</span>
+              <h1 className="text-lg font-extrabold tracking-tight text-oxford leading-none flex items-center gap-0.5">
+                CTM RH
               </h1>
               <span className="text-[9px] text-slate-400 font-bold tracking-wider uppercase mt-1 block">
-                CTM RH Brasil
+                Dashboard
               </span>
             </div>
           </div>

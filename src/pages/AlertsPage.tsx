@@ -20,10 +20,10 @@ import {
   RefreshCw,
   FolderMinus
 } from "lucide-react";
-import { RhEmployee, Substitution } from "../types/rh";
-import { formatarDataBR, calcularDiasRestantes } from "../utils/dateUtils";
+import { RhEmployee, Substitution, AbsenceItem } from "../types/rh";
+import { formatarDataBR, calcularDiasRestantes, getToday } from "../utils/dateUtils";
 import { obterSubstituicoes } from "../services/additionalDataSource";
-import { validarLimiteAusencias, AbsenceItem, calcularMapaOcupacaoDias } from "../utils/absenceUtils";
+import { validarLimiteAusencias, calcularMapaOcupacaoDias } from "../utils/absenceUtils";
 import { identificarPendencias } from "../utils/riskUtils";
 
 export type LocalAlertSeverity = "Crítica" | "Alta" | "Média" | "Baixa" | "Informativa";
@@ -77,7 +77,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
               descricao: `O contrato do instrutor ${emp.nome} expirou em ${formatarDataBR(emp.dataTerminoReal)} (${Math.abs(dias)} dias atrás). Ação urgente de regularização exigida!`,
               gravidade: "Crítica",
               categoria: "Contrato",
-              dataGeracao: "2026-07-03",
+              dataGeracao: getToday(),
               status: "Novo",
               relatedEmployeeId: emp.recordId
             });
@@ -88,7 +88,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
               descricao: `O contrato do instrutor ${emp.nome} vence em ${formatarDataBR(emp.dataTerminoReal)} (restam apenas ${dias} dias). Necessário parecer de renovação.`,
               gravidade: "Alta",
               categoria: "Contrato",
-              dataGeracao: "2026-07-03",
+              dataGeracao: getToday(),
               status: "Novo",
               relatedEmployeeId: emp.recordId
             });
@@ -118,7 +118,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
               descricao: `Férias programadas para ${emp.nome} de ${formatarDataBR(f.dataInicio)} a ${formatarDataBR(f.dataFim)} não possuem docente substituto homologado no sistema.`,
               gravidade: "Alta",
               categoria: "Férias",
-              dataGeracao: "2026-07-03",
+              dataGeracao: getToday(),
               status: "Novo",
               relatedEmployeeId: emp.recordId
             });
@@ -139,7 +139,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
             descricao: `O instrutor ${emp.nome} acumulou mais de ${saldo} dias de direito de férias disponíveis sem agendamento no curto prazo. Risco de passivo trabalhista!`,
             gravidade: "Média",
             categoria: "Férias",
-            dataGeracao: "2026-07-03",
+            dataGeracao: getToday(),
             status: "Novo",
             relatedEmployeeId: emp.recordId
           });
@@ -158,7 +158,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
             descricao: `O cadastro do docente ${emp.nome} apresenta inconsistência: ${p.label}.`,
             gravidade: p.severity === "Alta" ? "Alta" : "Média",
             categoria: "Cadastro",
-            dataGeracao: "2026-07-03",
+            dataGeracao: getToday(),
             status: "Novo",
             relatedEmployeeId: emp.recordId
           });
@@ -204,17 +204,17 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
         descricao: `Risco Operacional! Há períodos críticos onde a regra de limite de no máximo 8 pessoas ausentes no mesmo dia é desrespeitada. Datas impactadas: ${sortedDays.slice(0, 5).map(formatarDataBR).join(", ")}${sortedDays.length > 5 ? `... (+${sortedDays.length - 5} dias)` : ""}.`,
         gravidade: "Crítica",
         categoria: "Risco",
-        dataGeracao: "2026-07-03",
+        dataGeracao: getToday(),
         status: "Novo"
       });
     }
 
-    const mapped = list.map(a => ({...a, status: alertStatuses[a.alertId] || a.status as any}));
+    const mapped = list.map(a => ({...a, status: (alertStatuses[a.alertId] as SystemAlert["status"]) || a.status}));
     setAlerts(mapped);
   }, [employees]);
 
   const handleStatusChange = (id: string, newStatus: string) => {
-    setAlertStatuses(prev => ({...prev, [id]: newStatus}));
+    setAlertStatuses(prev => ({...prev, [id]: newStatus as SystemAlert["status"]}));
   };
 
   const handleAssignResponsibility = (id: string, name: string) => {
