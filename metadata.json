@@ -1,0 +1,6 @@
+{
+  "name": "CTM RH Dashboard",
+  "description": "Painel operacional e analítico para gestão de instrutores e funcionários do Centro de Treinamento Missionário do Brasil",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
