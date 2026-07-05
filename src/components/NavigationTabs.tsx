@@ -20,7 +20,8 @@ export type TabId =
   | "dashboard"
   | "team"
   | "schedule"
-  | "risks";
+  | "risks"
+  | "settings";
 
 interface TabItem {
   id: TabId;
@@ -79,6 +80,11 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
       icon: AlertTriangle,
       badgeCount: systemAlertCount > 0 ? systemAlertCount : undefined,
       badgeColor: "red"
+    },
+    {
+      id: "settings",
+      label: "Configurações",
+      icon: Settings
     }
   ];
 

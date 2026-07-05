@@ -37,12 +37,13 @@ import { VacationDetailsPanel } from "../components/VacationDetailsPanel";
 import { VacationFormPanel } from "../components/VacationFormPanel";
 
 interface VacationsPageProps {
+  appSettings: import("../types/rh").AppSettings;
   onSave?: (emp: RhEmployee, createSubst: boolean) => void;
   employees: RhEmployee[];
 }
 
 export const VacationsPage: React.FC<VacationsPageProps> = (props) => {
-  const { employees } = props;
+  const { employees, appSettings } = props;
   // Estado de Filtros
   const [filtros, setFiltros] = useState<VacationFilters>({
     search: "",
@@ -556,11 +557,9 @@ export const VacationsPage: React.FC<VacationsPageProps> = (props) => {
                 className="w-full rounded-xl border border-lavender p-2 text-xs outline-none bg-white text-slate-600 font-semibold focus:border-jordy cursor-pointer"
               >
                 <option value="">Todas as Zonas</option>
-                <option value="Zona Sul">Zona Sul</option>
-                <option value="Zona Norte">Zona Norte</option>
-                <option value="Zona Leste">Zona Leste</option>
-                <option value="Zona Oeste">Zona Oeste</option>
-                <option value="Administrativo">Administrativo</option>
+                {appSettings.zonas.map((z, idx) => (
+                  <option key={idx} value={z}>{z}</option>
+                ))}
               </select>
             </div>
 

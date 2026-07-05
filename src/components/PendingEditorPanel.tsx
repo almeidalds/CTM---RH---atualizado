@@ -5,16 +5,18 @@
 
 import React, { useState, useEffect } from "react";
 import { X, Save, AlertTriangle, CheckCircle } from "lucide-react";
-import { RhEmployee } from "../types/rh";
+import { RhEmployee, AppSettings } from "../types/rh";
 
 interface PendingEditorPanelProps {
   employee: RhEmployee | null;
+  appSettings: AppSettings;
   onClose: () => void;
   onSave: (updated: RhEmployee) => Promise<void>;
 }
 
 export const PendingEditorPanel: React.FC<PendingEditorPanelProps> = ({
   employee,
+  appSettings,
   onClose,
   onSave
 }) => {
@@ -23,17 +25,9 @@ export const PendingEditorPanel: React.FC<PendingEditorPanelProps> = ({
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const popularLanguages = [
-    "Inglês",
-    "Espanhol",
-    "Português para Estrangeiros",
-    "Francês",
-    "Japonês",
-    "Italiano",
-    "Mandarim",
-    "Alemão",
-    "Coreano"
-  ];
+  const popularLanguages = appSettings.idiomas;
+  const cargosOptions = appSettings.cargos;
+  const zonasOptions = appSettings.zonas;
 
   useEffect(() => {
     if (employee) {
@@ -176,13 +170,16 @@ export const PendingEditorPanel: React.FC<PendingEditorPanelProps> = ({
               {/* Cargo */}
               <div>
                 <label className="block text-xs font-bold text-[#60708A] mb-1.5">Cargo</label>
-                <input
-                  type="text"
+                <select
                   value={formData.cargo}
                   onChange={(e) => handleChange("cargo", e.target.value)}
-                  className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-jordy text-gray-800 font-medium"
-                  placeholder="Ex: Instrutor de Espanhol"
-                />
+                  className="w-full text-xs px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-jordy bg-white text-gray-800 font-medium"
+                >
+                  <option value="">Selecione o cargo</option>
+                  {cargosOptions.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
               </div>
 
               {/* Turno */}
@@ -209,11 +206,9 @@ export const PendingEditorPanel: React.FC<PendingEditorPanelProps> = ({
                   className="w-full text-xs px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-jordy bg-white text-gray-800 font-medium"
                 >
                   <option value="">Selecione a zona</option>
-                  <option value="Zona Norte">Zona Norte</option>
-                  <option value="Zona Sul">Zona Sul</option>
-                  <option value="Zona Leste">Zona Leste</option>
-                  <option value="Zona Oeste">Zona Oeste</option>
-                  <option value="Administrativo">Administrativo</option>
+                  {zonasOptions.map((z) => (
+                    <option key={z} value={z}>{z}</option>
+                  ))}
                 </select>
               </div>
 

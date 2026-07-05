@@ -202,3 +202,9 @@ export type AbsenceItem = {
   dataFim: string;
   tipo?: string;
 };
+
+export type AppSettings = {
+  idiomas: string[];
+  cargos: string[];
+  zonas: string[];
+};

@@ -20,7 +20,8 @@ import { AlertsPage } from "./pages/AlertsPage";
 import { GenerateReportModal } from "./components/GenerateReportModal";
 import { FloatingActionBar } from "./components/FloatingActionBar";
 
-import { RhEmployee } from "./types/rh";
+import { SettingsPage } from "./pages/SettingsPage";
+import { RhEmployee, AppSettings } from "./types/rh";
 import { obterFuncionarios, salvarEdicaoFuncionario, resetarDados } from "./services/rhDataSource";
 import { obterSubstituicoes } from "./services/additionalDataSource";
 import { EmployeeDetailsPanel } from "./components/EmployeeDetailsPanel";
@@ -29,8 +30,31 @@ import { calcularQualidadeDados } from "./utils/dataQualityUtils";
 import { calcularRisco } from "./utils/riskUtils";
 import { calcularStatusFerias } from "./utils/vacationUtils";
 
+const DEFAULT_SETTINGS: AppSettings = {
+  idiomas: ["Inglês", "Espanhol", "Francês", "Mandarim", "Alemão", "Italiano", "Japonês"],
+  cargos: ["Instrutor de Inglês", "Instrutor de Espanhol", "Instrutor de Francês", "Coordenador", "Diretor", "Analista"],
+  zonas: ["Zona Norte", "Zona Sul", "Zona Leste", "Zona Oeste", "Centro", "Administrativo"]
+};
+
+const obterSettings = (): AppSettings => {
+  const data = localStorage.getItem("rh_app_settings");
+  if (data) {
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      return DEFAULT_SETTINGS;
+    }
+  }
+  return DEFAULT_SETTINGS;
+};
+
+const salvarSettings = (settings: AppSettings) => {
+  localStorage.setItem("rh_app_settings", JSON.stringify(settings));
+};
+
 export default function App() {
   const [employees, setEmployees] = useState<RhEmployee[]>([]);
+  const [appSettings, setAppSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
   const [activeTab, setActiveTab] = useState<TabId>("dashboard");
 
   // Inner sub-tabs state to organize page info cleanly and prevent information overload
@@ -53,6 +77,8 @@ export default function App() {
   useEffect(() => {
     const data = obterFuncionarios();
     setEmployees(data);
+    const savedSettings = obterSettings();
+    setAppSettings(savedSettings);
   }, []);
 
   // Redefinir banco de dados para os valores fictícios padrões
@@ -336,6 +362,17 @@ export default function App() {
               )}
             </div>
           )}
+
+          {/* CATEGORY 5: CONFIGURAÇÕES */}
+          {activeTab === "settings" && (
+            <SettingsPage
+              settings={appSettings}
+              onSave={(newSettings) => {
+                setAppSettings(newSettings);
+                salvarSettings(newSettings);
+              }}
+            />
+          )}
         </main>
 
         {/* Footer credits */}
@@ -354,6 +391,7 @@ export default function App() {
       {/* Flyout 2: Formulário Integrado de Correção */}
       <PendingEditorPanel
         employee={editingEmployee}
+        appSettings={appSettings}
         onClose={() => setEditingEmployee(null)}
         onSave={handleSaveEmployee}
       />

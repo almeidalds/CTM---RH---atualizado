@@ -30,6 +30,7 @@ import { SubstitutionSummaryCard } from "../components/SummaryCard";
 import { validarLimiteAusencias,  gerarDatasNoIntervalo } from "../utils/absenceUtils";
 
 interface SubstitutionsPageProps {
+  appSettings: import("../types/rh").AppSettings;
   employees: RhEmployee[];
   onSelectEmployee: (emp: RhEmployee) => void;
   onRefreshData?: () => void;
@@ -37,6 +38,7 @@ interface SubstitutionsPageProps {
 
 export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
   employees,
+  appSettings,
   onSelectEmployee,
   onRefreshData
 }) => {
@@ -507,13 +509,16 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
 
                 <div>
                   <label className="block text-[10px] uppercase font-black text-slate-400 mb-1">Idioma Afetado</label>
-                  <input
-                    type="text"
+                  <select
                     value={formLanguage}
                     onChange={(e) => setFormLanguage(e.target.value)}
-                    placeholder="Ex: Espanhol"
                     className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
-                  />
+                  >
+                    <option value="">Selecione o idioma...</option>
+                    {appSettings.idiomas.map((i) => (
+                      <option key={i} value={i}>{i}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
@@ -540,24 +545,30 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
 
                 <div>
                   <label className="block text-[10px] uppercase font-black text-slate-400 mb-1">Zona</label>
-                  <input
-                    type="text"
+                  <select
                     value={formZone}
                     onChange={(e) => setFormZone(e.target.value)}
-                    placeholder="Ex: Zona Sul"
                     className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
-                  />
+                  >
+                    <option value="">Selecione a zona...</option>
+                    {appSettings.zonas.map((z) => (
+                      <option key={z} value={z}>{z}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
                   <label className="block text-[10px] uppercase font-black text-slate-400 mb-1">Turno</label>
-                  <input
-                    type="text"
+                  <select
                     value={formShift}
                     onChange={(e) => setFormShift(e.target.value)}
-                    placeholder="Ex: Tarde"
                     className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
-                  />
+                  >
+                    <option value="">Selecione o turno...</option>
+                    <option value="Manhã">Manhã</option>
+                    <option value="Tarde">Tarde</option>
+                    <option value="Noite">Noite</option>
+                  </select>
                 </div>
 
                 <div>
