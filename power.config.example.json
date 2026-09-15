@@ -1,0 +1,10 @@
+{
+  "appDisplayName": "CTM - RH",
+  "description": "Painel de RH do CTM Brasil",
+  "environmentId": "<ENVIRONMENT_ID>",
+  "buildPath": "./dist",
+  "buildEntryPoint": "index.html",
+  "localAppUrl": "http://localhost:3000",
+  "connectionReferences": {},
+  "databaseReferences": {}
+}
