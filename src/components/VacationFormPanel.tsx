@@ -129,7 +129,7 @@ export const VacationFormPanel: React.FC<Props> = ({ employee, allEmployees, onC
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-oxford">Períodos de Férias</h3>
-              <button onClick={handleAddPeriod} className="text-xs font-bold text-purple-600 hover:text-purple-700 bg-purple-50 px-2 py-1 rounded cursor-pointer">
+              <button onClick={handleAddPeriod} className="text-xs font-bold text-yinmn hover:text-yinmn bg-sky-50 px-2 py-1 rounded cursor-pointer">
                 + Adicionar Período
               </button>
             </div>
@@ -206,7 +206,7 @@ export const VacationFormPanel: React.FC<Props> = ({ employee, allEmployees, onC
             
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold text-oxford">Abono Pecuniário (Vender férias)</label>
-              <input type="checkbox" checked={soldVacation} onChange={e => setSoldVacation(e.target.checked)} className="rounded border-slate-300 text-purple-600 focus:ring-purple-600" />
+              <input type="checkbox" checked={soldVacation} onChange={e => setSoldVacation(e.target.checked)} className="rounded border-slate-300 text-yinmn focus:ring-yinmn" />
             </div>
 
             {soldVacation && (
@@ -221,7 +221,7 @@ export const VacationFormPanel: React.FC<Props> = ({ employee, allEmployees, onC
                 <Link className="w-4 h-4 text-slate-400" />
                 <label className="text-xs font-semibold text-oxford">Criar substituição automaticamente</label>
               </div>
-              <input type="checkbox" checked={autoSubst} onChange={e => setAutoSubst(e.target.checked)} className="rounded border-slate-300 text-purple-600 focus:ring-purple-600" />
+              <input type="checkbox" checked={autoSubst} onChange={e => setAutoSubst(e.target.checked)} className="rounded border-slate-300 text-yinmn focus:ring-yinmn" />
             </div>
 
             {autoSubst && (
@@ -240,7 +240,7 @@ export const VacationFormPanel: React.FC<Props> = ({ employee, allEmployees, onC
             onClick={handleSave}
             disabled={!allValid}
             className={`px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition-colors cursor-pointer ${
-              allValid ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-md' : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              allValid ? 'bg-yinmn hover:bg-yinmn text-white shadow-md' : 'bg-slate-200 text-slate-400 cursor-not-allowed'
             }`}
           >
             <Save className="w-4 h-4" />

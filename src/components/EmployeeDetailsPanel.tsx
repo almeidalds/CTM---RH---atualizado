@@ -159,83 +159,84 @@ Risco: ${risk}`;
     <div className="fixed inset-0 z-50 overflow-hidden flex justify-end" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
       {/* Backdrop overlay */}
       <div
-        className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity"
+          className="absolute inset-0 bg-slate-950/25 backdrop-blur-[2px] transition-opacity"
         onClick={onClose}
       />
 
       {/* Flyout panel */}
       <div className="relative w-full max-w-lg bg-white h-full shadow-2xl flex flex-col z-10 transition-transform duration-300 translate-x-0">
         {/* Header */}
-        <div className="bg-[#0D1B2F] text-white p-6 flex items-center justify-between border-b border-gray-800">
+          <div className="bg-white text-oxford px-6 py-5 flex items-center justify-between border-b border-sky-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700">
-              <User className="w-5 h-5 text-[#00995D]" />
+              <div className="w-11 h-11 bg-sky-50 rounded-xl flex items-center justify-center border border-sky-100">
+                <User className="w-5 h-5 text-yinmn" />
             </div>
             <div>
-              <h2 className="text-base font-extrabold tracking-tight truncate max-w-[280px]">
+                <span className="text-[10px] font-black uppercase tracking-[0.16em] text-yinmn block mb-1">Ficha do colaborador</span>
+                <h2 className="text-base font-extrabold tracking-tight truncate max-w-[280px] text-oxford">
                 {employee.nome}
               </h2>
-              <p className="text-xs text-gray-400 font-mono">
+                <p className="text-xs text-slate-400 font-mono mt-0.5">
                 {employee.idFuncionario || "ID Pendente"}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors cursor-pointer"
+            className="p-2 rounded-lg text-slate-400 hover:text-yinmn hover:bg-sky-50 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5">
           {/* Quick Stats Badges */}
-          <div className="flex flex-wrap items-center gap-2 pb-4 border-b border-gray-100">
+          <div className="flex flex-wrap items-center gap-2 pb-5 border-b border-sky-100">
             <StatusBadge status={employee.statusFuncionario} />
             <RiskBadge level={risk} />
           </div>
 
           {/* Dados do Cargo e Turno */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase tracking-wider text-[#60708A]">Informações de Lotação</h3>
+            <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-slate-500">Informações de lotação</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                <div className="flex items-center gap-1.5 text-[#60708A] mb-1">
+              <div className="bg-white p-3.5 rounded-xl border border-sky-100">
+                <div className="flex items-center gap-1.5 text-slate-400 mb-1.5">
                   <Layers className="w-3.5 h-3.5" />
                   <span className="text-[10px] uppercase font-bold">Cargo</span>
                 </div>
-                <p className="text-xs font-bold text-[#0D1B2F] truncate">
+                <p className="text-xs font-bold text-oxford truncate">
                   {employee.cargo || "Não definido"}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                <div className="flex items-center gap-1.5 text-[#60708A] mb-1">
+              <div className="bg-white p-3.5 rounded-xl border border-sky-100">
+                <div className="flex items-center gap-1.5 text-slate-400 mb-1.5">
                   <Clock className="w-3.5 h-3.5" />
                   <span className="text-[10px] uppercase font-bold">Turno</span>
                 </div>
-                <p className="text-xs font-bold text-[#0D1B2F] truncate">
+                <p className="text-xs font-bold text-oxford truncate">
                   {employee.turno || "Não cadastrado"}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                <div className="flex items-center gap-1.5 text-[#60708A] mb-1">
+              <div className="bg-white p-3.5 rounded-xl border border-sky-100">
+                <div className="flex items-center gap-1.5 text-slate-400 mb-1.5">
                   <Layers className="w-3.5 h-3.5" />
                   <span className="text-[10px] uppercase font-bold">Zona</span>
                 </div>
-                <p className="text-xs font-bold text-[#0D1B2F] truncate">
+                <p className="text-xs font-bold text-oxford truncate">
                   {employee.zona || "Não cadastrada"}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                <div className="flex items-center gap-1.5 text-[#60708A] mb-1">
+              <div className="bg-white p-3.5 rounded-xl border border-sky-100">
+                <div className="flex items-center gap-1.5 text-slate-400 mb-1.5">
                   <Globe2 className="w-3.5 h-3.5" />
                   <span className="text-[10px] uppercase font-bold">Idiomas</span>
                 </div>
-                <p className="text-xs font-bold text-[#0D1B2F] truncate" title={employee.idiomas?.join(", ") || "Nenhum"}>
+                <p className="text-xs font-bold text-oxford truncate" title={employee.idiomas?.join(", ") || "Nenhum"}>
                   {employee.idiomas?.join(", ") || "Nenhum cadastrado"}
                 </p>
               </div>
@@ -244,10 +245,10 @@ Risco: ${risk}`;
 
           {/* Datas de Contrato */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase tracking-wider text-[#60708A]">Vigência Contratual</h3>
+            <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-slate-500">Vigência contratual</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                <div className="flex items-center gap-1.5 text-[#60708A] mb-1">
+              <div className="bg-white p-3.5 rounded-xl border border-sky-100">
+                <div className="flex items-center gap-1.5 text-slate-400 mb-1.5">
                   <Calendar className="w-3.5 h-3.5" />
                   <span className="text-[10px] uppercase font-bold">Admissão</span>
                 </div>
@@ -256,8 +257,8 @@ Risco: ${risk}`;
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                <div className="flex items-center gap-1.5 text-[#60708A] mb-1">
+              <div className="bg-white p-3.5 rounded-xl border border-sky-100">
+                <div className="flex items-center gap-1.5 text-slate-400 mb-1.5">
                   <Calendar className="w-3.5 h-3.5" />
                   <span className="text-[10px] uppercase font-bold">Término Real</span>
                 </div>
@@ -268,16 +269,16 @@ Risco: ${risk}`;
             </div>
 
             {employee.statusFuncionario !== "Encerrado" && employee.dataTerminoReal && (
-              <div className="p-4 rounded-xl bg-[#EEF6FF] border border-blue-100 flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase font-black text-blue-800 block">Tempo Restante de Contrato</span>
-                  <span className="text-sm font-black text-blue-900">
+                  <span className="text-[10px] uppercase font-black text-cadet block">Tempo restante de contrato</span>
+                  <span className="text-sm font-black text-oxford">
                     {dias !== null && dias >= 0 ? `${dias} dias` : "Contrato encerrado ou inválido"}
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] uppercase font-black text-blue-800 block">Status de Risco</span>
-                  <span className="text-xs font-bold text-blue-900">{risk}</span>
+                  <span className="text-[10px] uppercase font-black text-cadet block">Status de risco</span>
+                  <span className="text-xs font-bold text-oxford">{risk}</span>
                 </div>
               </div>
             )}
@@ -285,11 +286,11 @@ Risco: ${risk}`;
 
           {/* Contatos Corporativos */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase tracking-wider text-[#60708A]">Contato e Salas Virtuais</h3>
+            <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-slate-500">Contato e salas virtuais</h3>
             
             <div className="space-y-2">
               {/* E-mail */}
-              <div className="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:border-gray-200 transition-all bg-white shadow-sm">
+              <div className="flex items-center justify-between p-3.5 rounded-xl border border-sky-100 hover:border-sky-200 transition-all bg-white">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <Mail className="w-4 h-4 text-gray-400 shrink-0" />
                   <div className="min-w-0">
@@ -311,7 +312,7 @@ Risco: ${risk}`;
               </div>
 
               {/* Zoom Link */}
-              <div className="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:border-gray-200 transition-all bg-white shadow-sm">
+              <div className="flex items-center justify-between p-3.5 rounded-xl border border-sky-100 hover:border-sky-200 transition-all bg-white">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <Video className="w-4 h-4 text-gray-400 shrink-0" />
                   <div className="min-w-0">
@@ -357,7 +358,7 @@ Risco: ${risk}`;
           )}
 
           {/* Seção Linha do Tempo */}
-          <div className="border-t border-lavender/50 pt-6 space-y-4">
+          <div className="border-t border-sky-100 pt-6 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-black uppercase tracking-wider text-[#60708A] flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-yinmn" />
@@ -368,7 +369,7 @@ Risco: ${risk}`;
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="text-[10px] font-bold text-slate-500 bg-slate-50 border border-lavender/30 rounded px-2 py-0.5 focus:outline-none"
+                className="text-[10px] font-bold text-slate-500 bg-slate-50 border border-sky-100 rounded px-2 py-0.5 focus:outline-none"
               >
                 <option value="all">Todas as categorias</option>
                 <option value="Cadastro">Cadastro</option>
@@ -381,7 +382,7 @@ Risco: ${risk}`;
             </div>
 
             {/* Linha do tempo visual */}
-            <div className="relative border-l-2 border-lavender pl-4 ml-2.5 space-y-4 pt-1 pb-1">
+            <div className="relative border-l-2 border-sky-100 pl-4 ml-2.5 space-y-4 pt-1 pb-1">
               {events
                 .filter((evt) => selectedCategory === "all" || evt.categoria === selectedCategory)
                 .map((evt) => {
@@ -418,12 +419,12 @@ Risco: ${risk}`;
                   return (
                     <div key={evt.recordId} className="relative group">
                       {/* Timeline Dot */}
-                      <span className="absolute -left-[27px] top-1 flex items-center justify-center w-5 h-5 rounded-full bg-white border-2 border-lavender shadow-sm">
+                      <span className="absolute -left-[27px] top-1 flex items-center justify-center w-5 h-5 rounded-full bg-white border-2 border-sky-100 shadow-sm">
                         <span className={`w-2 h-2 rounded-full ${bulletBg}`} />
                       </span>
 
                       {/* Event Details */}
-                      <div className="bg-lavender/5 p-3 rounded-xl border border-lavender/35 space-y-1 text-xs">
+                      <div className="bg-sky-50/50 p-3 rounded-xl border border-sky-100 space-y-1 text-xs">
                         <div className="flex items-center justify-between text-[10px] font-bold text-slate-400">
                           <span>{formatarDataBR(evt.data)}</span>
                           <span className={`uppercase text-[8px] font-black ${categoryColor}`}>{evt.categoria}</span>
@@ -456,7 +457,7 @@ Risco: ${risk}`;
             </div>
 
             {/* Formulário rápido para adicionar observação */}
-            <form onSubmit={handleAddObservation} className="bg-slate-50 p-3.5 rounded-2xl border border-lavender/40 space-y-3">
+            <form onSubmit={handleAddObservation} className="bg-slate-50 p-3.5 rounded-2xl border border-sky-100 space-y-3">
               <span className="text-[10px] uppercase font-black text-slate-400 block">Adicionar Registro Histórico</span>
               <div className="flex gap-2">
                 <input
@@ -464,13 +465,13 @@ Risco: ${risk}`;
                   placeholder="Escreva uma observação..."
                   value={newObs}
                   onChange={(e) => setNewObs(e.target.value)}
-                  className="flex-1 text-xs bg-white border border-lavender/50 rounded-xl px-3 py-2 focus:outline-none focus:border-jordy text-slate-700"
+                  className="flex-1 text-xs bg-white border border-sky-100 rounded-xl px-3 py-2 focus:outline-none focus:border-jordy text-slate-700"
                 />
                 
                 <select
                   value={newCategory}
                   onChange={(e) => setNewCategory(e.target.value as TimelineEventCategory)}
-                  className="text-xs font-bold text-slate-600 bg-white border border-lavender/50 rounded-xl px-2 focus:outline-none"
+                  className="text-xs font-bold text-slate-600 bg-white border border-sky-100 rounded-xl px-2 focus:outline-none"
                 >
                   <option value="Alteração administrativa">Admin</option>
                   <option value="Cadastro">Cadastro</option>

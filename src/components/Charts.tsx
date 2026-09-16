@@ -35,7 +35,7 @@ interface ChartCardProps {
 }
 
 export const ChartCard: React.FC<ChartCardProps> = ({ title, description, children }) => (
-  <div className="bg-white p-6 rounded-[28px] border border-lavender shadow-[0_10px_30px_rgba(25,35,56,0.015)] flex flex-col h-full hover:shadow-[0_15px_35px_rgba(25,35,56,0.035)] hover:-translate-y-1 transition-all duration-300">
+  <div className="bg-white p-6 rounded-[28px] border border-sky-100 shadow-[0_10px_30px_rgba(16,42,67,0.015)] flex flex-col h-full hover:shadow-[0_15px_35px_rgba(16,42,67,0.035)] hover:-translate-y-1 transition-all duration-300">
     <div className="mb-5">
       <h4 className="text-base font-extrabold text-oxford tracking-tight">{title}</h4>
       <p className="text-[11px] text-slate-400 font-medium mt-1 leading-snug">{description}</p>
@@ -46,7 +46,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({ title, description, childr
   </div>
 );
 
-const COLORS = ["#6366f1", "#8b5cf6", "#d946ef", "#f43f5e", "#f59e0b", "#10b981", "#06b6d4", "#3b82f6"];
+const COLORS = ["#1769aa", "#3b82f6", "#67b7e8", "#f43f5e", "#f59e0b", "#10b981", "#06b6d4", "#164e78"];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -135,7 +135,7 @@ export const ZonaChart: React.FC<ZonaChartProps> = ({ data }) => {
     );
   }
 
-  const pieColors = ["#4C2B85", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", "#64748B"];
+  const pieColors = ["#1769aa", "#3B82F6", "#10B981", "#F59E0B", "#67b7e8", "#64748B"];
 
   return (
     <ResponsiveContainer width="100%" height={260}>
@@ -177,7 +177,7 @@ export const TurnoChart: React.FC<TurnoChartProps> = ({ data }) => {
     );
   }
 
-  const turnoColors = ["#6366f1", "#8b5cf6", "#14b8a6"];
+  const turnoColors = ["#1769aa", "#67b7e8", "#14b8a6"];
 
   return (
     <ResponsiveContainer width="100%" height={240}>
@@ -211,7 +211,7 @@ export const StatusChart: React.FC<StatusChartProps> = ({ data }) => {
   }
 
   const statusColors: Record<string, string> = {
-    Ativo: "#8b5cf6",
+    Ativo: "#1769aa",
     "A começar": "#3b82f6",
     Encerrado: "#f43f5e",
   };
@@ -260,7 +260,7 @@ export const RiscoChart: React.FC<RiscoChartProps> = ({ data }) => {
     Crítico: "#ef4444",
     Alto: "#f59e0b",
     Médio: "#3b82f6",
-    Baixo: "#8b5cf6",
+    Baixo: "#67b7e8",
     "Sem risco": "#10b981",
     "Cadastro incompleto": "#64748b",
   };

@@ -65,10 +65,10 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
   // Sem data de término: Cadastro incompleto
   const obterAlertaContrato = (c: ContractRenewal) => {
     if (!c.dataTerminoReal) {
-      return { label: "Incompleto", color: "text-yinmn border-lavender", bg: "bg-lavender/30" };
+      return { label: "Incompleto", color: "text-yinmn border-sky-100", bg: "bg-sky-50" };
     }
     if (c.diasRestantes === null) {
-      return { label: "Incompleto", color: "text-yinmn border-lavender", bg: "bg-lavender/30" };
+      return { label: "Incompleto", color: "text-yinmn border-sky-100", bg: "bg-sky-50" };
     }
     if (c.diasRestantes < 0) {
       return { label: "Expirado", color: "text-red-700 border-red-200 font-black", bg: "bg-red-50" };
@@ -157,7 +157,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Title */}
-      <div className="border-b border-lavender pb-4">
+      <div className="border-b border-sky-100 pb-4">
         <h2 className="text-lg sm:text-xl font-extrabold text-oxford flex items-center gap-2.5">
           <FileText className="w-5 h-5 text-yinmn" />
           <span>Gestão de Contratos & Renovação</span>
@@ -189,7 +189,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
           <span className="text-lg font-extrabold text-oxford block mt-0.5">{v90}</span>
         </div>
 
-        <div className="p-3 bg-lavender/30 rounded-2xl border border-lavender">
+        <div className="p-3 bg-sky-50 rounded-2xl border border-sky-100">
           <span className="text-[9px] uppercase font-black text-yinmn tracking-wider block">Em Análise</span>
           <span className="text-lg font-extrabold text-oxford block mt-0.5">{totalEmAnalise}</span>
         </div>
@@ -211,7 +211,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
       </div>
 
       {/* Filter bar */}
-      <div className="bg-white p-4 rounded-2xl border border-lavender shadow-sm flex flex-col md:flex-row gap-3">
+      <div className="bg-white p-4 rounded-2xl border border-sky-100 shadow-sm flex flex-col md:flex-row gap-3">
         <div className="flex-1 relative">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
@@ -224,7 +224,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
                 onClearDefaultSearch();
               }
             }}
-            className="w-full text-xs pl-10 pr-10 py-2.5 rounded-xl border border-lavender focus:outline-none focus:border-jordy focus:ring-1 focus:ring-jordy text-slate-700"
+            className="w-full text-xs pl-10 pr-10 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:border-jordy focus:ring-1 focus:ring-jordy text-slate-700"
           />
           {searchTerm && (
             <button
@@ -243,7 +243,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
         <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className="text-xs font-bold text-slate-600 bg-slate-50 border border-lavender rounded-xl px-4 py-2.5 cursor-pointer focus:outline-none"
+          className="text-xs font-bold text-slate-600 bg-slate-50 border border-sky-100 rounded-xl px-4 py-2.5 cursor-pointer focus:outline-none"
         >
           <option value="all">Status de Renovação (Todos)</option>
           <option value="Não iniciado">Não iniciado</option>
@@ -258,11 +258,11 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border border-lavender shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b border-lavender/50 text-[10px] uppercase font-black text-slate-400 tracking-wider">
+              <tr className="bg-slate-50 border-b border-sky-100 text-[10px] uppercase font-black text-slate-400 tracking-wider">
                 <th className="py-4 px-5">Instrutor</th>
                 <th className="py-4 px-4">Lotação / Campus</th>
                 <th className="py-4 px-4">Admissão</th>
@@ -275,13 +275,13 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
                 <th className="py-4 px-5 text-right">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-lavender/30 text-xs text-oxford">
+            <tbody className="divide-y divide-sky-100 text-xs text-oxford">
               {filteredContratos.map((c) => {
                 const risco = obterAlertaContrato(c);
                 const originalEmployee = employees.find((e) => e.recordId === c.recordId);
 
                 return (
-                  <tr key={c.recordId} className="hover:bg-lavender/10 transition-colors">
+                  <tr key={c.recordId} className="hover:bg-sky-50 transition-colors">
                     {/* Name */}
                     <td className="py-4 px-5">
                       <div
@@ -380,7 +380,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
                         </button>
                         <button
                           onClick={() => handleOpenEditModal(c)}
-                          className="text-[9px] bg-lavender/30 hover:bg-lavender/60 text-yinmn px-2 py-0.5 rounded border border-lavender/60 font-bold cursor-pointer"
+                          className="text-[9px] bg-sky-50 hover:bg-sky-100/60 text-yinmn px-2 py-0.5 rounded border border-sky-100/60 font-bold cursor-pointer"
                           title="Adicionar Observação ou Parecer"
                         >
                           Opinião
@@ -406,7 +406,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
       {/* FLYOUT MODAL — EDITAR PARECER / DATA LIMITE */}
       {editingContract && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl border border-lavender max-w-md w-full p-6 shadow-2xl relative text-xs">
+          <div className="bg-white rounded-3xl border border-sky-100 max-w-md w-full p-6 shadow-2xl relative text-xs">
             <h3 className="text-sm font-black uppercase tracking-wider text-oxford mb-4">
               Parecer de Renovação Contratual
             </h3>
@@ -425,7 +425,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
                   value={analystName}
                   onChange={(e) => setAnalystName(e.target.value)}
                   placeholder="Ex: Letícia de Albuquerque"
-                  className="w-full p-2.5 bg-slate-50 border border-lavender rounded-xl font-semibold"
+                  className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                 />
               </div>
 
@@ -435,7 +435,7 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
                   type="date"
                   value={decisionLimit}
                   onChange={(e) => setDecisionLimit(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 border border-lavender rounded-xl font-semibold"
+                  className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                 />
               </div>
 
@@ -446,12 +446,12 @@ export const ContractsPage: React.FC<ContractsPageProps> = ({
                   onChange={(e) => setObsText(e.target.value)}
                   rows={4}
                   placeholder="Justifique o motivo da recomendação de renovação ou encerramento (avaliação de turmas, pontualidade, etc.)..."
-                  className="w-full p-2.5 bg-slate-50 border border-lavender rounded-xl font-semibold"
+                  className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                 />
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-4 flex justify-end gap-2 border-t border-lavender/50">
+              <div className="pt-4 flex justify-end gap-2 border-t border-sky-100">
                 <button
                   type="button"
                   onClick={() => setEditingContract(null)}

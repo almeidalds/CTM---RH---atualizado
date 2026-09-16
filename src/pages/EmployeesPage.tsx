@@ -4,14 +4,18 @@
  */
 
 import React, { useState, useMemo } from "react";
-import { Users, Filter, HelpCircle } from "lucide-react";
-import { RhEmployee, EmployeeFilters } from "../types/rh";
+import { Users, UserPlus, HelpCircle } from "lucide-react";
+import { RhEmployee, EmployeeFilters, AppSettings } from "../types/rh";
 import { FiltersBar } from "../components/FiltersBar";
 import { EmployeeSummaryCard } from "../components/SummaryCard";
 import { calcularDiasRestantes } from "../utils/dateUtils";
 import { calcularRisco, identificarPendencias } from "../utils/riskUtils";
 
+import { PendingEditorPanel } from "../components/PendingEditorPanel";
+
 interface EmployeesPageProps {
+  appSettings: AppSettings;
+  onCreateEmployee: (employee: RhEmployee) => Promise<void>;
   employees: RhEmployee[];
   onSelectEmployee: (emp: RhEmployee) => void;
   onEditEmployee: (emp: RhEmployee) => void;
@@ -32,8 +36,17 @@ const INITIAL_FILTERS: EmployeeFilters = {
 export const EmployeesPage: React.FC<EmployeesPageProps> = ({
   employees,
   onSelectEmployee,
-  onEditEmployee
+  onEditEmployee,
+  appSettings,
+  onCreateEmployee
 }) => {
+  const [newEmployee, setNewEmployee] = useState<RhEmployee | null>(null);
+  const openCreate = () => setNewEmployee({
+    recordId: "", idFuncionario: "", nome: "", cargo: "", zona: "", turno: "",
+    dataAdmissao: "", dataTerminoReal: "", statusFuncionario: "Ativo", idiomas: [],
+    emailCorporativo: "", linkZoom: "", feriasMarcadas: false, feriasConcluidas: false,
+    feriasVendidas: false, diasVendidosFerias: 0, diasTotaisFerias: 0, periodosFerias: [],
+  });
   const [filters, setFilters] = useState<EmployeeFilters>(INITIAL_FILTERS);
 
   // Função principal de filtragem de funcionários baseada nos filtros ativos
@@ -73,7 +86,7 @@ export const EmployeesPage: React.FC<EmployeesPageProps> = ({
         return false;
       }
 
-      // 7. Risco Contratual
+      // 7. Status
       if (filters.risco && calcularRisco(emp) !== filters.risco) {
         return false;
       }
@@ -111,10 +124,10 @@ export const EmployeesPage: React.FC<EmployeesPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Page Title Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-purple-100/30 pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-sky-100 pb-4">
         <div>
           <h2 className="text-lg sm:text-xl font-extrabold text-[#1F1A2C] flex items-center gap-2.5">
-            <Users className="w-5 h-5 text-purple-600" />
+            <Users className="w-5 h-5 text-yinmn" />
             <span>Diretório de Funcionários</span>
           </h2>
           <p className="text-xs text-slate-400 font-medium mt-1">
@@ -122,9 +135,9 @@ export const EmployeesPage: React.FC<EmployeesPageProps> = ({
           </p>
         </div>
         
-        {/* Quick filters statistic indicator */}
-        <div className="text-xs text-purple-700 bg-purple-50 border border-purple-100/30 py-1.5 px-3.5 rounded-xl font-bold">
-          Total Ativos: {employees.filter((e) => e.statusFuncionario === "Ativo").length}
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-xs text-yinmn bg-sky-50 border border-sky-100 py-2 px-3 rounded-xl font-bold">Total ativos: {employees.filter((employee) => employee.statusFuncionario === "Ativo").length}</span>
+          <button type="button" onClick={openCreate} className="flex items-center gap-2 rounded-xl bg-yinmn px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-oxford focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yinmn focus-visible:ring-offset-2"><UserPlus className="h-4 w-4" />Novo funcionário</button>
         </div>
       </div>
 
@@ -138,11 +151,11 @@ export const EmployeesPage: React.FC<EmployeesPageProps> = ({
 
       {/* Responsive Card Grid list */}
       {filteredEmployees.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-purple-50/75 p-12 text-center shadow-[0_4px_20px_-4px_rgba(109,40,217,0.04)]">
-          <HelpCircle className="w-12 h-12 text-purple-200 mx-auto mb-3" />
+        <div className="bg-white rounded-2xl border border-sky-100/75 p-12 text-center shadow-[0_4px_20px_-4px_rgba(23,105,170,0.04)]">
+          <HelpCircle className="w-12 h-12 text-sky-200 mx-auto mb-3" />
           <h3 className="text-base font-extrabold text-[#1F1A2C] mb-1">Nenhum funcionário encontrado</h3>
           <p className="text-xs text-slate-400 max-w-sm mx-auto">
-            Tente reajustar seus filtros avançados ou pesquise por outro termo de busca para localizar docentes.
+            Tente reajustar seus filtros avançados ou pesquise por outro termo de busca para localizar Funcionários.
           </p>
         </div>
       ) : (
@@ -157,6 +170,16 @@ export const EmployeesPage: React.FC<EmployeesPageProps> = ({
           ))}
         </div>
       )}
+      <PendingEditorPanel
+        mode="create"
+        employee={newEmployee}
+        appSettings={appSettings}
+        onClose={() => setNewEmployee(null)}
+        onSave={async (employee) => {
+          await onCreateEmployee(employee);
+          setFilters(INITIAL_FILTERS);
+        }}
+      />
     </div>
   );
 };

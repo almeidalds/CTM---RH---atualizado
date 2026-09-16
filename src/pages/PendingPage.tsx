@@ -46,12 +46,12 @@ export const PendingPage: React.FC<PendingPageProps> = ({ employees, onEditEmplo
     });
 
   const MiniKpi = ({ title, value, icon: Icon, colorClass, highlight }: { title: string; value: number | string; icon: any; colorClass: string; highlight?: boolean }) => (
-    <div className={`p-4 rounded-2xl border bg-white shadow-[0_4px_12px_rgba(109,40,217,0.02)] flex items-center justify-between transition-all duration-300 ${highlight ? "border-purple-200 bg-purple-50/30" : "border-purple-100/40"}`}>
+    <div className={`p-4 rounded-2xl border bg-white shadow-[0_4px_12px_rgba(23,105,170,0.02)] flex items-center justify-between transition-all duration-300 ${highlight ? "border-sky-200 bg-sky-50/30" : "border-sky-100"}`}>
       <div className="min-w-0 pr-2">
         <span className="text-[10px] uppercase font-black text-slate-400 block truncate tracking-wider">{title}</span>
         <span className={`text-lg font-extrabold mt-1 block ${colorClass}`}>{value}</span>
       </div>
-      <div className={`p-2.5 rounded-xl shrink-0 ${highlight ? "bg-purple-100 text-purple-600" : "bg-slate-50 text-slate-400"}`}>
+      <div className={`p-2.5 rounded-xl shrink-0 ${highlight ? "bg-sky-100 text-yinmn" : "bg-slate-50 text-slate-400"}`}>
         <Icon className="w-4 h-4" />
       </div>
     </div>
@@ -60,9 +60,9 @@ export const PendingPage: React.FC<PendingPageProps> = ({ employees, onEditEmplo
   return (
     <div className="space-y-6">
       {/* Title Header */}
-      <div className="border-b border-purple-100/30 pb-4">
+      <div className="border-b border-sky-100 pb-4">
         <h2 className="text-lg sm:text-xl font-extrabold text-[#1F1A2C] flex items-center gap-2.5">
-          <FileCheck2 className="w-5 h-5 text-purple-600" />
+          <FileCheck2 className="w-5 h-5 text-yinmn" />
           <span>Saneamento de Pendências Cadastrais</span>
         </h2>
         <p className="text-xs text-slate-400 font-medium mt-1">
@@ -80,19 +80,19 @@ export const PendingPage: React.FC<PendingPageProps> = ({ employees, onEditEmplo
         <MiniKpi title="Sem Zona" value={stats.semZona} icon={MapPin} colorClass="text-amber-600" />
         <MiniKpi title="Sem Turno" value={stats.semTurno} icon={Clock} colorClass="text-amber-600" />
         <MiniKpi title="Sem Cargo" value={stats.semCargo} icon={Briefcase} colorClass="text-amber-600" />
-        <MiniKpi title="Sem E-mail" value={stats.semEmail} icon={Mail} colorClass="text-purple-600" />
+        <MiniKpi title="Sem E-mail" value={stats.semEmail} icon={Mail} colorClass="text-yinmn" />
       </div>
 
       {/* Main Remediator Section */}
-      <div className="bg-white p-6 rounded-2xl border border-purple-50/70 shadow-[0_4px_20px_-4px_rgba(109,40,217,0.04)] space-y-4">
+      <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-[0_4px_20px_-4px_rgba(23,105,170,0.04)] space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h3 className="text-sm font-extrabold text-[#1F1A2C]">Registros Pendentes de Correção</h3>
             <p className="text-xs text-slate-400 font-medium mt-0.5">Clique em editar para suprir dados faltantes e recalcular conformidade do sistema</p>
           </div>
           
-          <div className="text-xs font-black text-purple-700 bg-purple-50 px-3.5 py-1.5 rounded-xl border border-purple-100/30 flex items-center gap-1.5 shrink-0">
-            <ShieldCheck className="w-4 h-4 text-purple-600" />
+          <div className="text-xs font-black text-yinmn bg-sky-50 px-3.5 py-1.5 rounded-xl border border-sky-100 flex items-center gap-1.5 shrink-0">
+            <ShieldCheck className="w-4 h-4 text-yinmn" />
             <span>Qualidade Global: {stats.percentualQualidade}%</span>
           </div>
         </div>
@@ -101,7 +101,7 @@ export const PendingPage: React.FC<PendingPageProps> = ({ employees, onEditEmplo
         <div className="overflow-x-auto no-scrollbar">
           <table className="w-full min-w-[900px] border-collapse text-xs">
             <thead>
-              <tr className="border-b border-purple-50/40 text-slate-400 font-black uppercase text-[10px] bg-[#FAF9FF]">
+              <tr className="border-b border-sky-100 text-slate-400 font-black uppercase text-[10px] bg-[#FAF9FF]">
                 <th className="py-3 px-3 text-left">Funcionário</th>
                 <th className="py-3 px-3 text-left">ID Funcional</th>
                 <th className="py-3 px-3 text-left">Cargo</th>
@@ -112,7 +112,7 @@ export const PendingPage: React.FC<PendingPageProps> = ({ employees, onEditEmplo
                 <th className="py-3 px-3 text-center">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-purple-50/45">
+            <tbody className="divide-y divide-sky-100">
               {employeesWithIssues.map((emp) => {
                 // Descobrir a gravidade máxima do registro
                 const gravidades = emp.issues.map((i) => i.severity);
@@ -125,7 +125,7 @@ export const PendingPage: React.FC<PendingPageProps> = ({ employees, onEditEmplo
                   : "Baixa";
 
                 return (
-                  <tr key={emp.recordId} className="hover:bg-purple-50/20 transition-colors duration-200">
+                  <tr key={emp.recordId} className="hover:bg-sky-50/20 transition-colors duration-200">
                     {/* Nome */}
                     <td className="py-3.5 px-3 font-extrabold text-[#1F1A2C]">{emp.nome}</td>
                     
@@ -169,7 +169,7 @@ export const PendingPage: React.FC<PendingPageProps> = ({ employees, onEditEmplo
                     <td className="py-3.5 px-3 text-center">
                       <button
                         onClick={() => onEditEmployee(emp)}
-                        className="inline-flex items-center gap-1.5 bg-[#FAF9FF] hover:bg-purple-50 text-slate-500 hover:text-purple-600 font-bold px-3 py-1.5 rounded-xl border border-purple-100/30 transition-all duration-200 cursor-pointer"
+                        className="inline-flex items-center gap-1.5 bg-[#FAF9FF] hover:bg-sky-50 text-slate-500 hover:text-yinmn font-bold px-3 py-1.5 rounded-xl border border-sky-100 transition-all duration-200 cursor-pointer"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                         <span>Editar</span>

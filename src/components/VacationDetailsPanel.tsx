@@ -118,7 +118,7 @@ Recomendação: ${recomendacao}`;
         <div className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
           
           {/* Alerta Atual & Status Principal */}
-          <div className="p-4 rounded-2xl border flex flex-col gap-2.5 bg-lavender/10 border-lavender/35">
+          <div className="p-4 rounded-2xl border flex flex-col gap-2.5 bg-sky-50 border-sky-100">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider">Situação Cadastral de Férias</span>
               <span className={`text-[10px] font-extrabold px-3 py-1 rounded-full border ${alerta.color} flex items-center gap-1.5`}>
@@ -127,7 +127,7 @@ Recomendação: ${recomendacao}`;
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-lavender/35">
+            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-sky-100">
               <div>
                 <span className="text-[9px] uppercase font-bold text-slate-400 block mb-0.5">Tempo de Trabalho</span>
                 <span className="text-xs font-bold text-oxford">{tempoTrabalho.texto}</span>
@@ -143,17 +143,17 @@ Recomendação: ${recomendacao}`;
           <div className="space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-slate-400">Lotação do Instrutor</h3>
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-slate-50/50 p-2.5 rounded-xl border border-lavender/20">
+              <div className="bg-slate-50/50 p-2.5 rounded-xl border border-sky-50">
                 <span className="text-[9px] uppercase font-bold text-slate-400 block mb-0.5">Cargo</span>
                 <p className="text-xs font-extrabold text-oxford truncate">{employee.cargo}</p>
               </div>
 
-              <div className="bg-slate-50/50 p-2.5 rounded-xl border border-lavender/20">
+              <div className="bg-slate-50/50 p-2.5 rounded-xl border border-sky-50">
                 <span className="text-[9px] uppercase font-bold text-slate-400 block mb-0.5">Zona</span>
                 <p className="text-xs font-extrabold text-oxford truncate">{employee.zona || "Não cadastrada"}</p>
               </div>
 
-              <div className="bg-slate-50/50 p-2.5 rounded-xl border border-lavender/20">
+              <div className="bg-slate-50/50 p-2.5 rounded-xl border border-sky-50">
                 <span className="text-[9px] uppercase font-bold text-slate-400 block mb-0.5">Turno</span>
                 <p className="text-xs font-extrabold text-oxford truncate">{employee.turno || "Não cadastrado"}</p>
               </div>
@@ -165,7 +165,7 @@ Recomendação: ${recomendacao}`;
             <h3 className="text-xs font-black uppercase tracking-wider text-slate-400">Métricas e Direitos</h3>
             
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-slate-50/50 p-3 rounded-xl border border-lavender/20">
+              <div className="bg-slate-50/50 p-3 rounded-xl border border-sky-50">
                 <div className="flex items-center gap-1.5 text-slate-400 mb-1">
                   <ShieldCheck className="w-4 h-4 text-emerald-500" />
                   <span className="text-[9px] uppercase font-bold tracking-wider">Direito Adquirido</span>
@@ -175,7 +175,7 @@ Recomendação: ${recomendacao}`;
                 </p>
               </div>
 
-              <div className="bg-slate-50/50 p-3 rounded-xl border border-lavender/20">
+              <div className="bg-slate-50/50 p-3 rounded-xl border border-sky-50">
                 <div className="flex items-center gap-1.5 text-slate-400 mb-1">
                   <Calendar className="w-4 h-4 text-yinmn" />
                   <span className="text-[9px] uppercase font-bold tracking-wider">Férias Programadas</span>
@@ -187,13 +187,13 @@ Recomendação: ${recomendacao}`;
             </div>
 
             {/* Balanço de Dias */}
-            <div className="bg-white p-4 rounded-2xl border border-lavender shadow-sm grid grid-cols-3 gap-3 text-center">
+            <div className="bg-white p-4 rounded-2xl border border-sky-100 shadow-sm grid grid-cols-3 gap-3 text-center">
               <div>
                 <span className="text-[9px] uppercase font-black text-slate-400 block">Dias Totais</span>
                 <span className="text-base font-black text-oxford block mt-0.5">{diasTotais}</span>
                 <span className="text-[9px] text-slate-400 font-semibold block mt-0.5">Saldo padrão</span>
               </div>
-              <div className="border-x border-lavender">
+              <div className="border-x border-sky-100">
                 <span className="text-[9px] uppercase font-black text-amber-600 block">Dias Vendidos</span>
                 <span className="text-base font-black text-amber-600 block mt-0.5">{diasVendidos}</span>
                 <span className="text-[9px] text-amber-500 font-semibold block mt-0.5">Abono pecuniário</span>
@@ -221,9 +221,9 @@ Recomendação: ${recomendacao}`;
 
             <div className="space-y-2.5">
               {employee.periodosFerias && employee.periodosFerias.map((period, i) => (
-                <div key={i} className="p-3 bg-lavender/10 border border-lavender/35 rounded-xl flex items-center justify-between">
+                <div key={i} className="p-3 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-lavender text-yinmn rounded-lg flex items-center justify-center font-black text-xs">
+                    <div className="w-8 h-8 bg-sky-100 text-yinmn rounded-lg flex items-center justify-center font-black text-xs">
                       {i + 1}º
                     </div>
                     <div>
@@ -234,7 +234,7 @@ Recomendação: ${recomendacao}`;
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <span className="text-xs font-black text-yinmn bg-lavender/30 px-2.5 py-1 rounded-lg border border-lavender">
+                    <span className="text-xs font-black text-yinmn bg-sky-50 px-2.5 py-1 rounded-lg border border-sky-100">
                       {period.dias} dias
                     </span>
                   </div>
@@ -242,7 +242,7 @@ Recomendação: ${recomendacao}`;
               ))}
 
               {(!employee.periodosFerias || employee.periodosFerias.length === 0) && (
-                <div className="p-6 border border-dashed border-lavender/50 rounded-xl text-center text-slate-400 bg-slate-50/20">
+                <div className="p-6 border border-dashed border-sky-100 rounded-xl text-center text-slate-400 bg-slate-50/20">
                   <Calendar className="w-8 h-8 mx-auto text-jordy mb-1.5" />
                   <p className="text-xs font-semibold">Nenhuma escala de férias programada para este instrutor.</p>
                 </div>
@@ -256,7 +256,7 @@ Recomendação: ${recomendacao}`;
               <BadgeAlert className="w-4 h-4 text-jordy" />
               <h4 className="text-xs font-black uppercase tracking-wider text-jordy">Recomendação de Gestão</h4>
             </div>
-            <p className="text-xs font-semibold leading-relaxed text-lavender">
+            <p className="text-xs font-semibold leading-relaxed text-sky-300">
               {recomendacao}
             </p>
           </div>
@@ -264,10 +264,10 @@ Recomendação: ${recomendacao}`;
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 bg-slate-50 border-t border-lavender/40 flex gap-2">
+        <div className="p-4 bg-slate-50 border-t border-sky-100 flex gap-2">
           <button
             onClick={handleCopySummary}
-            className="flex-1 text-xs bg-white hover:bg-lavender/10 text-slate-500 hover:text-yinmn font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-all border border-lavender active:scale-[0.98]"
+            className="flex-1 text-xs bg-white hover:bg-sky-50 text-slate-500 hover:text-yinmn font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-all border border-sky-100 active:scale-[0.98]"
           >
             {copiedSummary ? (
               <>

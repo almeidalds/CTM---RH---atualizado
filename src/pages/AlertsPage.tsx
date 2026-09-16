@@ -115,7 +115,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
             list.push({
               alertId: `alert-no-cover-${emp.recordId}-${idx}`,
               tipo: "Férias sem cobertura cadastrada",
-              descricao: `Férias programadas para ${emp.nome} de ${formatarDataBR(f.dataInicio)} a ${formatarDataBR(f.dataFim)} não possuem docente substituto homologado no sistema.`,
+              descricao: `Férias programadas para ${emp.nome} de ${formatarDataBR(f.dataInicio)} a ${formatarDataBR(f.dataFim)} não possuem Funcionário substituto homologado no sistema.`,
               gravidade: "Alta",
               categoria: "Férias",
               dataGeracao: getToday(),
@@ -155,7 +155,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
           list.push({
             alertId: `alert-inconsistency-${emp.recordId}-${idx}`,
             tipo: "Inconsistência cadastral",
-            descricao: `O cadastro do docente ${emp.nome} apresenta inconsistência: ${p.label}.`,
+            descricao: `O cadastro do Funcionário ${emp.nome} apresenta inconsistência: ${p.label}.`,
             gravidade: p.severity === "Alta" ? "Alta" : "Média",
             categoria: "Cadastro",
             dataGeracao: getToday(),
@@ -244,7 +244,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
       case "Contrato":
         return "text-blue-600";
       case "Férias":
-        return "text-purple-600";
+        return "text-yinmn";
       case "Substituição":
         return "text-amber-600";
       default:
@@ -279,13 +279,13 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Page Title */}
-      <div className="border-b border-purple-100/30 pb-4">
+      <div className="border-b border-sky-100 pb-4">
         <h2 className="text-lg sm:text-xl font-extrabold text-[#1F1A2C] flex items-center gap-2.5">
-          <Bell className="w-5 h-5 text-purple-600 animate-swing" />
+          <Bell className="w-5 h-5 text-yinmn animate-swing" />
           <span>Central de Alertas Operacionais Inteligentes</span>
         </h2>
         <p className="text-xs text-slate-400 font-medium mt-1">
-          Algoritmo de cruzamento em tempo real que audita vencimentos, ausências simultâneas e falhas de cobertura dos docentes.
+          Algoritmo de cruzamento em tempo real que audita vencimentos, ausências simultâneas e falhas de cobertura dos Funcionários.
         </p>
       </div>
 
@@ -325,7 +325,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
       </div>
 
       {/* Filter and search actions */}
-      <div className="bg-white p-4 rounded-2xl border border-purple-50/70 shadow-sm flex flex-col lg:flex-row gap-3">
+      <div className="bg-white p-4 rounded-2xl border border-sky-100 shadow-sm flex flex-col lg:flex-row gap-3">
         <div className="flex-1 relative">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
@@ -333,7 +333,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
             placeholder="Filtrar alertas por palavras chaves ou descrições..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full text-xs pl-10 pr-4 py-2.5 rounded-xl border border-purple-100/80 focus:outline-none focus:border-purple-400 text-slate-700"
+            className="w-full text-xs pl-10 pr-4 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:border-jordy text-slate-700"
           />
         </div>
 
@@ -342,7 +342,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
           <select
             value={selectedSeverity}
             onChange={(e) => setSelectedSeverity(e.target.value)}
-            className="text-xs font-bold text-slate-600 bg-slate-50 border border-purple-100/20 rounded-xl px-3 py-2 cursor-pointer focus:outline-none"
+            className="text-xs font-bold text-slate-600 bg-slate-50 border border-sky-100 rounded-xl px-3 py-2 cursor-pointer focus:outline-none"
           >
             <option value="all">Gravidade (Todas)</option>
             <option value="Crítica">Crítica</option>
@@ -355,7 +355,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="text-xs font-bold text-slate-600 bg-slate-50 border border-purple-100/20 rounded-xl px-3 py-2 cursor-pointer focus:outline-none"
+            className="text-xs font-bold text-slate-600 bg-slate-50 border border-sky-100 rounded-xl px-3 py-2 cursor-pointer focus:outline-none"
           >
             <option value="all">Categoria (Todas)</option>
             <option value="Contrato">Contrato</option>
@@ -369,7 +369,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="text-xs font-bold text-slate-600 bg-slate-50 border border-purple-100/20 rounded-xl px-3 py-2 cursor-pointer focus:outline-none"
+            className="text-xs font-bold text-slate-600 bg-slate-50 border border-sky-100 rounded-xl px-3 py-2 cursor-pointer focus:outline-none"
           >
             <option value="Pendente">Apenas Pendentes</option>
             <option value="Resolvido">Apenas Tratados / Resolvidos</option>
@@ -397,7 +397,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
                   ? "bg-red-50/20 border-red-100 hover:border-red-200"
                   : alert.gravidade === "Alta"
                   ? "bg-orange-50/20 border-orange-100 hover:border-orange-200"
-                  : "bg-[#FAF9FF] border-purple-50 hover:border-purple-200"
+                  : "bg-[#FAF9FF] border-sky-100 hover:border-sky-200"
               }`}
             >
               {/* Alert Content */}
@@ -410,7 +410,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
                     ? "bg-red-100 text-red-600"
                     : alert.gravidade === "Alta"
                     ? "bg-orange-100 text-orange-600"
-                    : "bg-purple-100 text-purple-600"
+                    : "bg-sky-100 text-yinmn"
                 }`}>
                   {isResolved ? (
                     <CheckCircle className="w-4 h-4" />
@@ -441,10 +441,10 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
                   {/* Related employee info shortcut if applicable */}
                   {relatedEmployee && (
                     <div className="pt-1.5 flex items-center gap-1.5">
-                      <span className="text-[10px] text-slate-400 font-medium">Docente associado:</span>
+                      <span className="text-[10px] text-slate-400 font-medium">Funcionário associado:</span>
                       <button
                         onClick={() => onSelectEmployee(relatedEmployee)}
-                        className="text-[10px] font-black text-purple-700 hover:underline flex items-center gap-0.5"
+                        className="text-[10px] font-black text-yinmn hover:underline flex items-center gap-0.5"
                       >
                         {relatedEmployee.nome}
                         <ExternalLink className="w-3 h-3" />
@@ -455,14 +455,14 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
               </div>
 
               {/* Action and assignment panel */}
-              <div className="flex flex-row md:flex-col items-start md:items-end justify-between gap-2.5 pt-3 md:pt-0 border-t md:border-t-0 border-purple-50 shrink-0">
+              <div className="flex flex-row md:flex-col items-start md:items-end justify-between gap-2.5 pt-3 md:pt-0 border-t md:border-t-0 border-sky-100 shrink-0">
                 {/* Assigner */}
                 <div className="flex items-center gap-1.5 text-xs">
                   <User className="w-3.5 h-3.5 text-slate-400" />
                   <select
                     value={currentAssignee}
                     onChange={(e) => handleAssignResponsibility(alert.alertId, e.target.value)}
-                    className="text-[11px] font-semibold bg-slate-50 hover:bg-slate-100 text-slate-600 border border-purple-50 rounded-lg px-2 py-1 focus:outline-none cursor-pointer"
+                    className="text-[11px] font-semibold bg-slate-50 hover:bg-slate-100 text-slate-600 border border-sky-100 rounded-lg px-2 py-1 focus:outline-none cursor-pointer"
                   >
                     <option value="">Atribuir analista...</option>
                     <option value="Letícia">Letícia (Férias)</option>
@@ -498,7 +498,7 @@ export const AlertsPage: React.FC<AlertsPageProps> = ({
         })}
 
         {filteredAlerts.length === 0 && (
-          <div className="bg-white rounded-3xl p-10 text-center border border-purple-50/50 shadow-sm text-slate-400 font-semibold">
+          <div className="bg-white rounded-3xl p-10 text-center border border-sky-100/50 shadow-sm text-slate-400 font-semibold">
             <CheckCircle className="w-10 h-10 text-emerald-400 mx-auto mb-2" />
             <h3 className="text-sm font-black text-[#1F1A2C]">Excelente! Central Totalmente Limpa</h3>
             <p className="text-xs text-slate-400 font-medium mt-1">Todos os riscos operacionais, inconsistências e férias vencidas estão devidamente monitorados.</p>

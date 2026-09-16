@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import { AppHeader } from "./components/AppHeader";
 import { NavigationTabs, TabId } from "./components/NavigationTabs";
 import { ReportsPage } from "./pages/ReportsPage";
-import { ExecutiveSummaryPage } from "./pages/ExecutiveSummaryPage";
 import { EmployeesPage } from "./pages/EmployeesPage";
 import { RisksPage } from "./pages/RisksPage";
 import { PendingPage } from "./pages/PendingPage";
@@ -19,10 +18,11 @@ import { ContractsPage } from "./pages/ContractsPage";
 import { AlertsPage } from "./pages/AlertsPage";
 import { GenerateReportModal } from "./components/GenerateReportModal";
 import { FloatingActionBar } from "./components/FloatingActionBar";
+import { SectionTabs } from "./components/SectionTabs";
 
 import { SettingsPage } from "./pages/SettingsPage";
 import { RhEmployee, AppSettings } from "./types/rh";
-import { obterFuncionarios, salvarEdicaoFuncionario, resetarDados } from "./services/rhDataSource";
+import { obterFuncionarios, salvarEdicaoFuncionario, resetarDados, criarFuncionario } from "./services/rhDataSource";
 import { obterSubstituicoes } from "./services/additionalDataSource";
 import { EmployeeDetailsPanel } from "./components/EmployeeDetailsPanel";
 import { PendingEditorPanel } from "./components/PendingEditorPanel";
@@ -60,13 +60,13 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>("dashboard");
 
   // Inner sub-tabs state to organize page info cleanly and prevent information overload
-  const [dashboardSubTab, setDashboardSubTab] = useState<"reports" | "executive">("reports");
-  const [teamSubTab, setTeamSubTab] = useState<"list" | "pending" | "timeline">("list");
+  const [teamSubTab, setTeamSubTab] = useState<"list" | "pending">("list");
   const [scheduleSubTab, setScheduleSubTab] = useState<"vacations" | "substitutions" | "replacement">("vacations");
   const [risksSubTab, setRisksSubTab] = useState<"heatmap" | "contracts" | "alerts">("heatmap");
   
   // Mobile Sidebar Toggle State
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // Global Report Generator Modal State
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -123,18 +123,25 @@ export default function App() {
   const systemAlertCount = criticalRiskCount + totalPendingSubstitutions;
 
   return (
-    <div className="min-h-screen bg-[#F8F7FC] flex text-oxford font-sans">
+    <div className="min-h-screen bg-slate-50 flex text-oxford font-sans">
       {/* Corporate Tab Navigation / Left Sidebar (Hidden on mobile unless triggered) */}
       <NavigationTabs
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         pendingCount={pendingCount}
+        teamSubTab={teamSubTab}
+        scheduleSubTab={scheduleSubTab}
+        risksSubTab={risksSubTab}
+        setTeamSubTab={setTeamSubTab}
+        setScheduleSubTab={setScheduleSubTab}
+        setRisksSubTab={setRisksSubTab}
         criticalRiskCount={criticalRiskCount}
         criticalVacationCount={criticalVacationCount}
         systemAlertCount={systemAlertCount}
         isOpen={isSidebarOpen}
+        isCollapsed={isSidebarCollapsed}
         onClose={() => setIsSidebarOpen(false)}
-        onResetData={handleResetData}
+        onToggleCollapse={() => setIsSidebarCollapsed((collapsed) => !collapsed)}
       />
 
       {/* Main Container */}
@@ -143,87 +150,38 @@ export default function App() {
         <AppHeader
           employeeCount={employees.length}
           onMenuToggle={() => setIsSidebarOpen(true)}
+          onSidebarToggle={() => setIsSidebarCollapsed((collapsed) => !collapsed)}
+          isSidebarCollapsed={isSidebarCollapsed}
           onResetData={handleResetData}
           onGenerateReportClick={() => setIsReportModalOpen(true)}
         />
 
         {/* Main Workspace Frame */}
-        <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        <main className="flex-1 max-w-[1480px] w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
           {/* CATEGORY 1: DASHBOARD */}
           {activeTab === "dashboard" && (
-            <div className="space-y-6">
-              <div className="flex border-b border-lavender pb-px gap-6 select-none">
-                <button
-                  onClick={() => setDashboardSubTab("reports")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 cursor-pointer ${
-                    dashboardSubTab === "reports"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600"
-                  }`}
-                >
-                  Relatórios
-                </button>
-                <button
-                  onClick={() => setDashboardSubTab("executive")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 cursor-pointer ${
-                    dashboardSubTab === "executive"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600"
-                  }`}
-                >
-                  Resumo Executivo
-                </button>
-              </div>
-              
-              {dashboardSubTab === "reports" && (
-                <ReportsPage
-                  employees={employees}
-                  onSelectEmployee={setSelectedEmployee}
-                  onGenerateReportClick={() => setIsReportModalOpen(true)}
-                  onResetData={handleResetData}
-                />
-              )}
-              {dashboardSubTab === "executive" && (
-                <ExecutiveSummaryPage employees={employees} />
-              )}
-            </div>
+            <ReportsPage
+              employees={employees}
+              onSelectEmployee={setSelectedEmployee}
+            />
           )}
-
           {/* CATEGORY 2: EQUIPE & INTEGRIDADE */}
           {activeTab === "team" && (
             <div className="space-y-6">
-              {/* Segmented Controller (Tabs) */}
-              <div className="flex border-b border-lavender pb-px gap-6 select-none">
-                <button
-                  onClick={() => setTeamSubTab("list")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 cursor-pointer ${
-                    teamSubTab === "list"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-200"
-                  }`}
-                >
-                  Quadro de Colaboradores
-                </button>
-                <button
-                  onClick={() => setTeamSubTab("pending")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
-                    teamSubTab === "pending"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-200"
-                  }`}
-                >
-                  <span>Saneamento & Pendências</span>
-                  {pendingCount > 0 && (
-                    <span className="bg-amber-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md leading-none">
-                      {pendingCount}
-                    </span>
-                  )}
-                </button>
-              </div>
+              <SectionTabs
+                activeId={teamSubTab}
+                onChange={(id) => setTeamSubTab(id as "list" | "pending")}
+                items={[{ id: "list", label: "Quadro de Colaboradores" }, { id: "pending", label: "Saneamento & Pendências", badge: pendingCount }]}
+              />
 
               {/* Sub-tab view router */}
               {teamSubTab === "list" ? (
                 <EmployeesPage
+                  appSettings={appSettings}
+                  onCreateEmployee={async (employee) => {
+                    const updatedList = await criarFuncionario(employee);
+                    setEmployees(updatedList);
+                  }}
                   employees={employees}
                   onSelectEmployee={setSelectedEmployee}
                   onEditEmployee={setEditingEmployee}
@@ -237,43 +195,15 @@ export default function App() {
           {/* CATEGORY 3: ESCALA & AUSÊNCIAS */}
           {activeTab === "schedule" && (
             <div className="space-y-6">
-              {/* Segmented Controller (Tabs) */}
-              <div className="flex border-b border-lavender pb-px gap-6 select-none overflow-x-auto no-scrollbar">
-                <button
-                  onClick={() => setScheduleSubTab("vacations")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                    scheduleSubTab === "vacations"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-200"
-                  }`}
-                >
-                  Controle de Férias
-                </button>
-                <button
-                  onClick={() => setScheduleSubTab("substitutions")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                    scheduleSubTab === "substitutions"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-200"
-                  }`}
-                >
-                  Gestão de Substituições
-                </button>
-                <button
-                  onClick={() => setScheduleSubTab("replacement")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                    scheduleSubTab === "replacement"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-200"
-                  }`}
-                >
-                  Simular Reposições (Vagas)
-                </button>
-              </div>
+              <SectionTabs
+                activeId={scheduleSubTab}
+                onChange={(id) => setScheduleSubTab(id as "vacations" | "substitutions" | "replacement")}
+                items={[{ id: "vacations", label: "Controle de Férias" }, { id: "substitutions", label: "Gestão de Substituições" }, { id: "replacement", label: "Simular Reposições" }]}
+              />
 
               {/* Sub-tab view router */}
               {scheduleSubTab === "vacations" && (
-                <VacationsPage employees={employees} onSave={(updated, createSubst) => {
+                <VacationsPage appSettings={appSettings} employees={employees} onSave={(updated, createSubst) => {
                 handleSaveEmployee(updated);
                 if (createSubst && updated.periodosFerias && updated.periodosFerias.length > 0) {
                   // Trigger substitution creation
@@ -298,7 +228,7 @@ export default function App() {
               }} />
               )}
               {scheduleSubTab === "substitutions" && (
-                <SubstitutionsPage employees={employees} onSelectEmployee={setSelectedEmployee} />
+                <SubstitutionsPage appSettings={appSettings} employees={employees} onSelectEmployee={setSelectedEmployee} />
               )}
               {scheduleSubTab === "replacement" && (
                 <ReplacementPage employees={employees} onSelectEmployee={setSelectedEmployee} />
@@ -309,44 +239,11 @@ export default function App() {
           {/* CATEGORY 4: RISCOS & CONTRATOS */}
           {activeTab === "risks" && (
             <div className="space-y-6">
-              {/* Segmented Controller (Tabs) */}
-              <div className="flex border-b border-lavender pb-px gap-6 select-none overflow-x-auto no-scrollbar">
-                <button
-                  onClick={() => setRisksSubTab("heatmap")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                    risksSubTab === "heatmap"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-200"
-                  }`}
-                >
-                  Análise Preditiva & Heatmap
-                </button>
-                <button
-                  onClick={() => setRisksSubTab("contracts")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                    risksSubTab === "contracts"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-200"
-                  }`}
-                >
-                  Prazos Contratuais & Parecer
-                </button>
-                <button
-                  onClick={() => setRisksSubTab("alerts")}
-                  className={`pb-3.5 text-xs sm:text-sm font-black uppercase tracking-wider border-b-2 transition-all duration-200 whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
-                    risksSubTab === "alerts"
-                      ? "border-yinmn text-yinmn"
-                      : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-200"
-                  }`}
-                >
-                  <span>Painel de Alertas</span>
-                  {systemAlertCount > 0 && (
-                    <span className="bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md leading-none animate-pulse">
-                      {systemAlertCount}
-                    </span>
-                  )}
-                </button>
-              </div>
+              <SectionTabs
+                activeId={risksSubTab}
+                onChange={(id) => setRisksSubTab(id as "heatmap" | "contracts" | "alerts")}
+                items={[{ id: "heatmap", label: "Análise Preditiva" }, { id: "contracts", label: "Prazos Contratuais" }, { id: "alerts", label: "Painel de Alertas", badge: systemAlertCount }]}
+              />
 
               {/* Sub-tab view router */}
               {risksSubTab === "heatmap" && (
@@ -378,7 +275,7 @@ export default function App() {
         </main>
 
         {/* Footer credits */}
-        <footer className="py-6 text-center text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-white border-t border-lavender/50">
+        <footer className="py-6 text-center text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-white border-t border-sky-100">
           CTM RH Dashboard © 2026 • Centro de Treinamento Missionário do Brasil
         </footer>
       </div>

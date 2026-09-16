@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useRef, useId } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Sparkles,
   FileText,
   RotateCcw,
   AlertTriangle,
@@ -14,8 +13,7 @@ import {
   X,
   ShieldAlert,
   CalendarDays,
-  ChevronUp,
-  Settings
+  Bell
 } from "lucide-react";
 import { TabId } from "./NavigationTabs";
 
@@ -45,6 +43,8 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
   setRisksSubTab
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
 
   const totalAlerts = systemAlertCount + pendingCount + criticalVacationCount;
 
@@ -72,7 +72,16 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 select-none font-sans">
+    <div
+      className="fixed bottom-4 right-4 z-40 select-none font-sans sm:bottom-6 sm:right-6"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && isOpen) {
+          event.stopPropagation();
+          setIsOpen(false);
+          triggerRef.current?.focus();
+        }
+      }}
+    >
       <AnimatePresence>
         {isOpen && (
           <>
@@ -84,30 +93,33 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
 
             {/* Expanded Menu */}
             <motion.div
+              id={panelId}
+              role="region"
+              aria-label="Notificações de RH"
               initial={{ opacity: 0, scale: 0.9, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 15 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute bottom-16 right-0 z-40 w-80 bg-white rounded-3xl border border-lavender shadow-[0_20px_50px_rgba(49,72,122,0.18)] p-5 overflow-hidden flex flex-col gap-4"
+              className="absolute bottom-[4.5rem] right-0 z-40 w-80 max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-7rem)] overflow-y-auto bg-white rounded-2xl border border-sky-100 shadow-[0_12px_40px_rgba(16,42,67,0.12)] p-5 flex flex-col gap-4"
             >
               {/* Header */}
-              <div className="flex items-center justify-between border-b border-lavender/50 pb-3">
+              <div className="flex items-center justify-between border-b border-sky-100 pb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-lavender text-yinmn rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-4 h-4" />
+                  <div className="w-8 h-8 bg-sky-100 text-yinmn rounded-lg flex items-center justify-center">
+                    <Bell className="w-4 h-4" />
                   </div>
                   <div>
                     <h4 className="text-xs font-black text-oxford uppercase tracking-wider">
-                      Ações de Monitoramento
+                      Notificações
                     </h4>
                     <p className="text-[10px] text-slate-400 font-semibold mt-0.5">
-                      Controles Rápidos do CTM Brasil
+                      Controle Rápido
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors"
+                  aria-label="Fechar notificações" className="p-2 rounded-lg text-slate-500 hover:text-yinmn hover:bg-sky-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yinmn"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -139,7 +151,7 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
               {/* Shortcut Workflow Targets */}
               <div className="space-y-1.5">
                 <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block px-1">
-                  Atalhos de Fluxo de Trabalho
+                  Atalhos
                 </span>
 
                 {/* Critical Alerts Target */}
@@ -183,7 +195,7 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
                 {/* Férias Críticas Target */}
                 <button
                   onClick={navigateToVacations}
-                  className="w-full text-left p-2.5 hover:bg-lavender/10 rounded-xl border border-transparent hover:border-lavender transition-all flex items-center justify-between group cursor-pointer"
+                  className="w-full text-left p-2.5 hover:bg-sky-50 rounded-xl border border-transparent hover:border-sky-100 transition-all flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
                     <CalendarDays className="w-4 h-4 text-yinmn group-hover:scale-110 transition-transform" />
@@ -201,7 +213,7 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
               </div>
 
               {/* Global Utility Actions */}
-              <div className="space-y-1.5 pt-1.5 border-t border-lavender/50">
+              <div className="space-y-1.5 pt-1.5 border-t border-sky-100">
                 <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block px-1">
                   Ações de Escrita e Banco
                 </span>
@@ -212,7 +224,7 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
                       onGenerateReportClick();
                       setIsOpen(false);
                     }}
-                    className="flex flex-col items-center justify-center p-3 rounded-2xl bg-lavender/5 hover:bg-lavender/20 border border-lavender/35 transition-all text-center gap-1.5 group active:scale-95 cursor-pointer"
+                    className="flex flex-col items-center justify-center p-3 rounded-2xl bg-sky-50/50 hover:bg-sky-50 border border-sky-100 transition-all text-center gap-1.5 group active:scale-95 cursor-pointer"
                   >
                     <FileText className="w-4 h-4 text-yinmn group-hover:scale-110 transition-transform" />
                     <span className="text-[10px] font-black text-slate-700 uppercase tracking-wider block">Relatórios</span>
@@ -232,30 +244,30 @@ export const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Trigger Button */}
+      {/* Notification trigger */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-full flex items-center justify-center relative shadow-[0_8px_30px_rgba(49,72,122,0.35)] transition-all duration-300 active:scale-90 select-none cursor-pointer ${
-          isOpen 
-            ? "bg-oxford text-white hover:bg-[#253556]" 
-            : "bg-yinmn hover:bg-cadet text-white"
+        ref={triggerRef}
+        type="button"
+        onClick={() => setIsOpen((open) => !open)}
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? panelId : undefined}
+        aria-label={`${isOpen ? "Fechar" : "Abrir"} notificações${totalAlerts > 0 ? `: ${totalAlerts} ocorrências` : ": sem pendências"}`}
+        title={isOpen ? "Fechar notificações" : "Abrir notificações"}
+        className={`relative z-40 flex h-14 items-center gap-3 rounded-2xl border px-3 shadow-[0_4px_18px_rgba(16,42,67,0.10)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yinmn focus-visible:ring-offset-2 motion-reduce:transition-none cursor-pointer ${
+          isOpen
+            ? "border-yinmn bg-yinmn text-white"
+            : "border-sky-100 bg-white text-oxford hover:border-sky-200 hover:bg-sky-50"
         }`}
-        title="Menu de Ações de RH"
       >
-        <div className="relative">
-          {isOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <>
-              <ChevronUp className="w-6 h-6 animate-bounce" />
-              {totalAlerts > 0 && (
-                <span className="absolute -top-3 -right-3 bg-rose-500 text-white text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white leading-none shadow-sm">
-                  {totalAlerts}
-                </span>
-              )}
-            </>
-          )}
-        </div>
+        <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${isOpen ? "bg-white/15 text-white" : "bg-sky-50 text-yinmn"}`}>
+          {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Bell className="h-5 w-5" aria-hidden="true" />}
+        </span>
+        <span className="hidden text-xs font-semibold sm:block">Notificações</span>
+        {totalAlerts > 0 && (
+          <span aria-hidden="true" className={`flex h-6 min-w-6 items-center justify-center rounded-lg px-1.5 text-[10px] font-bold tabular-nums ${isOpen ? "bg-white/20 text-white" : "bg-amber-50 text-amber-800"}`}>
+            {totalAlerts > 99 ? "99+" : totalAlerts}
+          </span>
+        )}
       </button>
     </div>
   );

@@ -71,3 +71,21 @@ export function resetarDados(): RhEmployee[] {
   salvarNoStorage(SAMPLE_EMPLOYEES);
   return SAMPLE_EMPLOYEES;
 }
+
+/** Cria um cadastro sem substituir registros existentes. */
+export async function criarFuncionario(dados: RhEmployee): Promise<RhEmployee[]> {
+  if (!dados.nome.trim()) throw new Error("Informe o nome do funcionário.");
+  if (dados.dataAdmissao && dados.dataTerminoReal && dados.dataTerminoReal < dados.dataAdmissao) {
+    throw new Error("A data de término não pode ser anterior à admissão.");
+  }
+  const todos = obterFuncionarios();
+  const idFuncionario = dados.idFuncionario.trim();
+  if (idFuncionario && todos.some((employee) => employee.idFuncionario?.trim().toLowerCase() === idFuncionario.toLowerCase())) {
+    throw new Error("Já existe um funcionário com esse ID funcional.");
+  }
+  const novo: RhEmployee = { ...dados, recordId: crypto.randomUUID(), nome: dados.nome.trim(), idFuncionario };
+  const atualizados = [...todos, novo];
+  // Propaga falhas de armazenamento para manter o formulário aberto e permitir nova tentativa.
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(atualizados));
+  return atualizados;
+}

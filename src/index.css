@@ -4,14 +4,35 @@
 @theme {
   --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  --color-oxford: #192338;
-  --color-cadet: #1E2E4F;
-  --color-yinmn: #31487A;
-  --color-jordy: #8FB3E2;
-  --color-lavender: #D9E1F1;
+  --color-oxford: #102a43;
+  --color-cadet: #164e78;
+  --color-yinmn: #1769aa;
+  --color-jordy: #67b7e8;
+  --color-sky-muted: #d7e7f5;
 }
 
-/* Custom styles for high-end look */
+body {
+  margin: 0;
+  background: #f4f8fc;
+  color: #102a43;
+  font-family: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(23, 105, 170, 0.24);
+  outline-offset: 2px;
+}
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -28,9 +49,9 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-jordy);
+  background: #9bc9e7;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-yinmn);
+  background: #1769aa;
 }

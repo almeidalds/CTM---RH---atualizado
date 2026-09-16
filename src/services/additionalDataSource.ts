@@ -190,7 +190,7 @@ export function obterContratos(employees: RhEmployee[]): ContractRenewal[] {
       // Determinar o status de renovação inicial com base nos dias restantes se não houver no perfil
       let status: ContractRenewalStatus = "Não iniciado";
       let responsavel = "RH Pendente";
-      let recomendacao = "Avaliar desempenho docente.";
+      let recomendacao = "Avaliar desempenho Funcionário.";
       
       if (!emp.dataTerminoReal) {
         status = "Urgente";
@@ -378,7 +378,7 @@ export function gerarAlertasSistema(
     } else if (sub.status === "Pendente" || sub.status === "Em análise") {
       alertas.push({
         recordId: `al-sub-pend-${sub.recordId}`,
-        titulo: "Processo de Cobertura Docente Pendente",
+        titulo: "Processo de Cobertura Funcionário Pendente",
         descricao: `A escala de substituição para a ausência de ${sub.instrutorAusente} (${sub.motivo}) está sob análise.`,
         categoria: "Substituição",
         severidade: "Médio",
@@ -468,7 +468,7 @@ export function gerarAlertasSistema(
     if (count <= 1) {
       alertas.push({
         recordId: `al-op-lang-${idioma}`,
-        titulo: `Baixa Cobertura Docente: ${idioma}`,
+        titulo: `Baixa Cobertura Funcionário: ${idioma}`,
         descricao: `Há apenas ${count} instrutor ativo habilitado para o idioma ${idioma}. Extremo risco de paralisação em caso de ausência ou rescisão.`,
         categoria: "Operacional",
         severidade: "Crítico",

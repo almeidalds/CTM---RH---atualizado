@@ -46,9 +46,9 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
   };
 
   return (
-    <div className="bg-white p-5 rounded-2xl border border-purple-50/70 shadow-[0_4px_20px_-4px_rgba(109,40,217,0.04)] mb-6">
+    <div className="bg-white p-5 rounded-xl border border-sky-100 shadow-[0_4px_20px_-4px_rgba(23,105,170,0.08)] mb-6">
       <div className="flex items-center gap-2 mb-4">
-        <Filter className="w-5 h-5 text-purple-600" />
+        <Filter className="w-5 h-5 text-yinmn" />
         <h3 className="text-xs font-black text-[#1F1A2C] uppercase tracking-wider">Filtros de Pesquisa Avançados</h3>
       </div>
 
@@ -63,7 +63,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
               placeholder="Ex: Carlos Augusto ou CTM-2024..."
               value={filters.search}
               onChange={(e) => handleFilterChange("search", e.target.value)}
-              className="w-full text-xs pl-9 pr-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 text-[#1F1A2C] placeholder-slate-400 font-medium"
+              className="w-full text-xs pl-9 pr-3 py-2.5 rounded-lg border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn text-oxford placeholder-slate-400 font-medium"
             />
           </div>
         </div>
@@ -74,7 +74,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
           <select
             value={filters.cargo}
             onChange={(e) => handleFilterChange("cargo", e.target.value)}
-            className="w-full text-xs px-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 bg-white text-[#1F1A2C] font-semibold"
+            className="w-full text-xs px-3 py-2.5 rounded-lg border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn bg-white text-oxford font-semibold"
           >
             <option value="">Todos os cargos</option>
             {cargos.map((c) => (
@@ -89,7 +89,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
           <select
             value={filters.zona}
             onChange={(e) => handleFilterChange("zona", e.target.value)}
-            className="w-full text-xs px-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 bg-white text-[#1F1A2C] font-semibold"
+            className="w-full text-xs px-3 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn bg-white text-[#1F1A2C] font-semibold"
           >
             <option value="">Todas as zonas</option>
             {zonas.map((z) => (
@@ -104,7 +104,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
           <select
             value={filters.turno}
             onChange={(e) => handleFilterChange("turno", e.target.value)}
-            className="w-full text-xs px-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 bg-white text-[#1F1A2C] font-semibold"
+            className="w-full text-xs px-3 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn bg-white text-[#1F1A2C] font-semibold"
           >
             <option value="">Todos os turnos</option>
             {turnos.map((t) => (
@@ -119,7 +119,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
           <select
             value={filters.idioma}
             onChange={(e) => handleFilterChange("idioma", e.target.value)}
-            className="w-full text-xs px-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 bg-white text-[#1F1A2C] font-semibold"
+            className="w-full text-xs px-3 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn bg-white text-[#1F1A2C] font-semibold"
           >
             <option value="">Todos os idiomas</option>
             {idiomas.map((i) => (
@@ -134,7 +134,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
           <select
             value={filters.status}
             onChange={(e) => handleFilterChange("status", e.target.value)}
-            className="w-full text-xs px-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 bg-white text-[#1F1A2C] font-semibold"
+            className="w-full text-xs px-3 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn bg-white text-[#1F1A2C] font-semibold"
           >
             <option value="">Todos os status</option>
             <option value="Ativo">Ativo</option>
@@ -145,11 +145,11 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
 
         {/* Nível de Risco */}
         <div>
-          <label className="block text-xs font-bold text-slate-400 mb-1">Risco Contratual</label>
+          <label className="block text-xs font-bold text-slate-400 mb-1">Status</label>
           <select
             value={filters.risco}
             onChange={(e) => handleFilterChange("risco", e.target.value)}
-            className="w-full text-xs px-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 bg-white text-[#1F1A2C] font-semibold"
+            className="w-full text-xs px-3 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn bg-white text-[#1F1A2C] font-semibold"
           >
             <option value="">Todos os riscos</option>
             <option value="Crítico">Crítico</option>
@@ -167,7 +167,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
           <select
             value={filters.pendencia}
             onChange={(e) => handleFilterChange("pendencia", e.target.value)}
-            className="w-full text-xs px-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 bg-white text-[#1F1A2C] font-semibold"
+            className="w-full text-xs px-3 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn bg-white text-[#1F1A2C] font-semibold"
           >
             <option value="Qualquer">Qualquer situação</option>
             <option value="Com Pendência">Com pendências de dados</option>
@@ -181,7 +181,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
           <select
             value={filters.periodoTermino}
             onChange={(e) => handleFilterChange("periodoTermino", e.target.value)}
-            className="w-full text-xs px-3 py-2.5 rounded-xl border border-purple-100/30 focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 bg-white text-[#1F1A2C] font-semibold"
+            className="w-full text-xs px-3 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:ring-2 focus:ring-yinmn/20 focus:border-yinmn bg-white text-[#1F1A2C] font-semibold"
           >
             <option value="all">Qualquer período</option>
             <option value="30">Próximos 30 dias</option>
@@ -195,7 +195,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
         <div className="flex items-end">
           <button
             onClick={onClear}
-            className="w-full text-xs bg-slate-50 hover:bg-purple-50 text-slate-500 hover:text-purple-600 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-colors active:scale-[0.98] h-9.5 border border-purple-100/30"
+            className="w-full text-xs bg-slate-50 hover:bg-sky-50 text-slate-500 hover:text-yinmn font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-colors active:scale-[0.98] h-9.5 border border-sky-100"
           >
             <X className="w-4 h-4" />
             <span>Limpar Filtros</span>

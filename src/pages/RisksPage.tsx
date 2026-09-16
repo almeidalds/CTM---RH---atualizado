@@ -79,7 +79,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
       title: "Japonês: Cobertura Crítica e Vencimento Próximo",
       severity: "Crítico" as const,
       category: "Idioma",
-      desc: "Yuki Tanaka (único docente de Japonês) tem seu contrato de trabalho vencendo em menos de 15 dias.",
+      desc: "Yuki Tanaka (único Funcionário de Japonês) tem seu contrato de trabalho vencendo em menos de 15 dias.",
       recommendation: "Iniciar processo seletivo emergencial para substituição ou propor renovação aditiva em até 48h.",
       icon: Languages,
     },
@@ -174,19 +174,19 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
 
     // Calcular nível de risco
     let nivel: "Verde" | "Azul" | "Amarelo" | "Laranja" | "Vermelho" = "Verde";
-    let recomendacao = "Célula estável. Cobertura docente em conformidade com as diretrizes acadêmicas.";
+    let recomendacao = "Célula estável. Cobertura Funcionário em conformidade com as diretrizes acadêmicas.";
 
     if (activeCount === 0) {
-      // Se não há docentes cadastrados para essa combinação de idioma/turno/zona
+      // Se não há Funcionários cadastrados para essa combinação de idioma/turno/zona
       nivel = "Vermelho";
       recomendacao = "Gargalo Crítico! Não há nenhum instrutor ativo para cobrir essa demanda linguística/local.";
     } else if (activeCount === 1) {
       if (contratos30 > 0 || subsPendentes > 0) {
         nivel = "Vermelho";
-        recomendacao = "Risco de colapso de grade acadêmica! Único docente ativo possui contrato expirando em 30 dias ou ausência não coberta.";
+        recomendacao = "Risco de colapso de grade acadêmica! Único Funcionário ativo possui contrato expirando em 30 dias ou ausência não coberta.";
       } else {
         nivel = "Laranja";
-        recomendacao = "Vulnerabilidade operacional. Apenas 1 docente ativo. Qualquer licença resultará em desfalque.";
+        recomendacao = "Vulnerabilidade operacional. Apenas 1 Funcionário ativo. Qualquer licença resultará em desfalque.";
       }
     } else if (activeCount >= 2) {
       if (contratos30 > 0 || subsPendentes > 0) {
@@ -271,7 +271,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
       recomendacao = `Alto Risco! ${count} ausências simultâneas projetadas. Recomenda-se suspender novos pedidos de folga para este mês.`;
     } else if (count >= 4) {
       nivel = "Amarelo";
-      recomendacao = `Atenção. ${count} ausências programadas. Planejamento de cobertura docente preventiva recomendado.`;
+      recomendacao = `Atenção. ${count} ausências programadas. Planejamento de cobertura Funcionário preventiva recomendado.`;
     }
 
     return {
@@ -285,7 +285,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
   return (
     <div className="space-y-6">
       {/* Page Title & Sub-tabs */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-lavender pb-4 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-sky-100 pb-4 gap-4">
         <div>
           <h2 className="text-lg sm:text-xl font-extrabold text-oxford flex items-center gap-2.5">
             <AlertTriangle className="w-5 h-5 text-rose-500" />
@@ -332,7 +332,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
                 return (
                   <div
                     key={alert.id}
-                    className={`p-5 bg-white rounded-2xl border border-lavender shadow-[0_4px_20px_-4px_rgba(49,72,122,0.04)] hover:shadow-[0_12px_24px_-8px_rgba(49,72,122,0.07)] hover:-translate-y-0.5 transition-all duration-300 flex gap-4 ${
+                    className={`p-5 bg-white rounded-2xl border border-sky-100 shadow-[0_4px_20px_-4px_rgba(23,105,170,0.04)] hover:shadow-[0_12px_24px_-8px_rgba(23,105,170,0.07)] hover:-translate-y-0.5 transition-all duration-300 flex gap-4 ${
                       alert.severity === "Crítico"
                         ? "border-l-4 border-l-rose-500"
                         : alert.severity === "Alto"
@@ -345,7 +345,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
                         ? "bg-rose-50 text-rose-600"
                         : alert.severity === "Alto"
                         ? "bg-amber-50 text-amber-600"
-                        : "bg-lavender/30 text-yinmn"
+                        : "bg-sky-50 text-yinmn"
                     }`}>
                       <Icon className="w-5 h-5" />
                     </div>
@@ -360,7 +360,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
                             ? "bg-rose-50 text-rose-600 border border-rose-100/50"
                             : alert.severity === "Alto"
                             ? "bg-amber-50 text-amber-600 border border-amber-100/50"
-                            : "bg-lavender/40 text-yinmn border border-lavender/85"
+                            : "bg-sky-50 text-yinmn border border-sky-200"
                         }`}>
                           {alert.severity}
                         </span>
@@ -369,7 +369,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
                       <h4 className="text-sm font-extrabold text-oxford">{alert.title}</h4>
                       <p className="text-xs text-slate-500 leading-relaxed font-semibold">{alert.desc}</p>
                       
-                      <div className="pt-3 mt-3 border-t border-lavender bg-lavender/5 p-3 rounded-xl">
+                      <div className="pt-3 mt-3 border-t border-sky-100 bg-sky-50/50 p-3 rounded-xl">
                         <span className="text-[9px] font-black uppercase tracking-wider text-yinmn block">
                           Ação Recomendada pelo RH
                         </span>
@@ -384,7 +384,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
 
           {/* Right Side */}
           <div className="space-y-6">
-            <div className="bg-white p-5 rounded-2xl border border-lavender shadow-[0_4px_20px_-4px_rgba(49,72,122,0.04)] space-y-4">
+            <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-[0_4px_20px_-4px_rgba(23,105,170,0.04)] space-y-4">
               <div>
                 <h4 className="text-xs font-black uppercase tracking-wider text-oxford">Contratos Críticos & Altos</h4>
                 <p className="text-[10px] text-slate-400 mt-0.5 font-semibold">Regularização contratual imediata</p>
@@ -396,7 +396,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
                   return (
                     <div
                       key={emp.recordId}
-                      className="p-3 bg-slate-50/50 rounded-xl border border-lavender/45 flex items-center justify-between hover:border-jordy/50 hover:bg-lavender/10 transition-all duration-250 cursor-pointer text-xs"
+                      className="p-3 bg-slate-50/50 rounded-xl border border-sky-100 flex items-center justify-between hover:border-jordy/50 hover:bg-sky-50 transition-all duration-250 cursor-pointer text-xs"
                       onClick={() => onSelectEmployee(emp)}
                     >
                       <div className="min-w-0 pr-2">
@@ -471,19 +471,19 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
             </div>
 
             {/* Matrix Render Box */}
-            <div className="bg-white p-5 rounded-3xl border border-lavender shadow-sm overflow-x-auto">
+            <div className="bg-white p-5 rounded-3xl border border-sky-100 shadow-sm overflow-x-auto">
               
               {/* MATRIX 1: Idioma x Turno */}
               {heatmapMode === "idioma_turno" && (
                 <div className="min-w-[600px] text-xs">
-                  <div className="grid grid-cols-4 border-b border-lavender pb-3 text-[10px] uppercase font-black text-slate-400 tracking-wider">
+                  <div className="grid grid-cols-4 border-b border-sky-100 pb-3 text-[10px] uppercase font-black text-slate-400 tracking-wider">
                     <div>Idioma de Ensino</div>
                     {TURNOS.map((t) => (
                       <div key={t} className="text-center">{t}</div>
                     ))}
                   </div>
 
-                  <div className="divide-y divide-lavender/30">
+                  <div className="divide-y divide-sky-100">
                     {IDIOMAS.map((idioma) => (
                       <div key={idioma} className="grid grid-cols-4 py-3.5 items-center">
                         <div className="font-extrabold text-oxford">{idioma}</div>
@@ -509,14 +509,14 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
               {/* MATRIX 2: Idioma x Zona */}
               {heatmapMode === "idioma_zona" && (
                 <div className="min-w-[700px] text-xs">
-                  <div className="grid grid-cols-6 border-b border-lavender pb-3 text-[10px] uppercase font-black text-slate-400 tracking-wider">
+                  <div className="grid grid-cols-6 border-b border-sky-100 pb-3 text-[10px] uppercase font-black text-slate-400 tracking-wider">
                     <div>Idioma de Ensino</div>
                     {ZONAS.map((z) => (
                       <div key={z} className="text-center">{z}</div>
                     ))}
                   </div>
 
-                  <div className="divide-y divide-lavender/30">
+                  <div className="divide-y divide-sky-100">
                     {IDIOMAS.map((idioma) => (
                       <div key={idioma} className="grid grid-cols-6 py-3.5 items-center">
                         <div className="font-extrabold text-oxford">{idioma}</div>
@@ -542,14 +542,14 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
               {/* MATRIX 3: Zona x Turno */}
               {heatmapMode === "zona_turno" && (
                 <div className="min-w-[600px] text-xs">
-                  <div className="grid grid-cols-4 border-b border-lavender pb-3 text-[10px] uppercase font-black text-slate-400 tracking-wider">
+                  <div className="grid grid-cols-4 border-b border-sky-100 pb-3 text-[10px] uppercase font-black text-slate-400 tracking-wider">
                     <div>Região / Campus</div>
                     {TURNOS.map((t) => (
                       <div key={t} className="text-center">{t}</div>
                     ))}
                   </div>
 
-                  <div className="divide-y divide-lavender/30">
+                  <div className="divide-y divide-sky-100">
                     {ZONAS.map((zona) => (
                       <div key={zona} className="grid grid-cols-4 py-3.5 items-center">
                         <div className="font-extrabold text-oxford">{zona}</div>
@@ -575,7 +575,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
               {/* MATRIX 4: Período x Ausências */}
               {heatmapMode === "periodo_ausencia" && (
                 <div className="space-y-4">
-                  <div className="p-3 bg-lavender/20 border border-lavender/60 rounded-2xl flex items-start gap-2 text-xs text-yinmn">
+                  <div className="p-3 bg-sky-50 border border-sky-100/60 rounded-2xl flex items-start gap-2 text-xs text-yinmn">
                     <Info className="w-4 h-4 text-yinmn shrink-0 mt-0.5" />
                     <p className="font-semibold leading-relaxed">
                       Esta matriz monitora a regra operacional crítica: **no máximo 8 professores ausentes** (férias marcadas ou afastamentos cadastrados) no mesmo mês. Meses com mais de 8 ausências ficam em **Vermelho** (Crítico).
@@ -643,8 +643,8 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
 
           {/* Right Side: Clicked Cell Tooltip Details */}
           <div className="lg:col-span-1">
-            <div className="bg-white p-5 rounded-3xl border border-lavender shadow-sm space-y-4 sticky top-4">
-              <div className="border-b border-lavender/60 pb-3">
+            <div className="bg-white p-5 rounded-3xl border border-sky-100 shadow-sm space-y-4 sticky top-4">
+              <div className="border-b border-sky-100/60 pb-3">
                 <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">Inspeção Detalhada de Risco</h4>
                 <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Selecione uma célula para ver recomendações</p>
               </div>
@@ -656,9 +656,9 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
                     <p className="text-sm font-black text-oxford mt-0.5">{selectedCellInfo.title}</p>
                   </div>
 
-                  <div className="p-3 bg-slate-50/50 rounded-2xl border border-lavender/30 space-y-2 font-semibold">
+                  <div className="p-3 bg-slate-50/50 rounded-2xl border border-sky-100 space-y-2 font-semibold">
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Docentes Ativos:</span>
+                      <span className="text-slate-400">Funcionários Ativos:</span>
                       <span className="font-extrabold text-oxford">{selectedCellInfo.activeCount}</span>
                     </div>
                     <div className="flex justify-between">
@@ -707,7 +707,7 @@ export const RisksPage: React.FC<RisksPageProps> = ({ employees, onSelectEmploye
                     </span>
                   </div>
 
-                  <div className="p-3 bg-lavender/10 rounded-2xl border border-lavender/50 space-y-1.5">
+                  <div className="p-3 bg-sky-50 rounded-2xl border border-sky-100 space-y-1.5">
                     <span className="text-[9px] uppercase font-black text-yinmn tracking-wider block">Recomendação Operacional</span>
                     <p className="text-xs text-slate-700 leading-relaxed font-semibold">{selectedCellInfo.recomendacao}</p>
                   </div>

@@ -46,7 +46,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ settings, onSave }) 
 
   const renderList = (field: keyof AppSettings, title: string, icon: React.ReactNode) => {
     return (
-      <div className="bg-white p-5 rounded-2xl border border-lavender shadow-sm flex flex-col h-full">
+      <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col h-full">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 text-yinmn font-extrabold text-sm">
             {icon}
@@ -54,14 +54,14 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ settings, onSave }) 
           </div>
           <button
             onClick={() => { setAddingTo(field); setNewValue(""); }}
-            className="p-1.5 rounded-xl bg-purple-50 text-purple-600 hover:bg-purple-100 transition-colors"
+            className="p-1.5 rounded-xl bg-sky-50 text-yinmn hover:bg-sky-100 transition-colors"
           >
             <Plus className="w-4 h-4" />
           </button>
         </div>
         <div className="flex-1 overflow-y-auto max-h-[300px] pr-2 space-y-2">
           {addingTo === field && (
-            <div className="flex items-center gap-2 mb-3 bg-purple-50/50 p-2 rounded-xl border border-purple-100">
+            <div className="flex items-center gap-2 mb-3 bg-sky-50/50 p-2 rounded-xl border border-sky-100">
               <input 
                 autoFocus
                 type="text" 
@@ -71,7 +71,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ settings, onSave }) 
                    if (e.key === 'Enter') handleSaveAdd();
                    if (e.key === 'Escape') handleCancelAdd();
                 }}
-                className="flex-1 text-xs px-2.5 py-1.5 rounded-lg border border-purple-200 outline-none focus:border-purple-400 bg-white"
+                className="flex-1 text-xs px-2.5 py-1.5 rounded-lg border border-sky-200 outline-none focus:border-jordy bg-white"
                 placeholder="Novo item..."
               />
               <button onClick={handleSaveAdd} className="p-1.5 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-lg transition-colors">
@@ -109,7 +109,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ settings, onSave }) 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-extrabold text-[#1F1A2C] tracking-tight flex items-center gap-2">
-              <Settings className="w-6 h-6 text-purple-600" />
+              <Settings className="w-6 h-6 text-yinmn" />
               Configurações
             </h1>
             <p className="text-xs text-slate-500 mt-1 font-medium">
@@ -118,7 +118,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ settings, onSave }) 
           </div>
           <button
             onClick={handleSave}
-            className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2"
+            className="bg-yinmn hover:bg-yinmn text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2"
           >
             <Save className="w-4 h-4" />
             Salvar Alterações

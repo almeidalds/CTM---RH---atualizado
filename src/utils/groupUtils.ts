@@ -94,48 +94,32 @@ export function agruparPorTurno(funcionarios: RhEmployee[]): GroupCount[] {
 /**
  * Calcula as saídas futuras agrupadas por mês.
  */
-export function calcularSaidasPorMes(funcionarios: RhEmployee[]): { mes: string; count: number }[] {
-  const hj = new Date();
-  const counts: Record<string, number> = {};
-
-  funcionarios.forEach((emp) => {
-    // Apenas quem está ativo ou a começar e possui data de término futura
-    if (emp.statusFuncionario !== "Encerrado" && emp.dataTerminoReal) {
-      const dias = calcularDiasRestantes(emp.dataTerminoReal);
-      if (dias !== null && dias >= 0) {
-        const mes = obterMesExtenso(emp.dataTerminoReal);
-        if (mes) {
-          const ano = emp.dataTerminoReal.split("-")[0];
-          const chave = `${mes}/${ano}`;
-          counts[chave] = (counts[chave] || 0) + 1;
-        }
-      }
-    }
+export function agruparSaidasPorMes(funcionarios: RhEmployee[]): { key: string; label: string; employees: RhEmployee[] }[] {
+  const groups = new Map<string, RhEmployee[]>();
+  funcionarios.forEach((employee) => {
+    const date = employee.dataTerminoReal;
+    if (employee.statusFuncionario === "Encerrado" || !date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    const [year, month, day] = date.split("-").map(Number);
+    const parsed = new Date(year, month - 1, day);
+    if (parsed.getFullYear() !== year || parsed.getMonth() !== month - 1 || parsed.getDate() !== day) return;
+    if (calcularDiasRestantes(date) < 0) return;
+    const key = date.slice(0, 7);
+    const group = groups.get(key) ?? [];
+    group.push(employee);
+    groups.set(key, group);
   });
-
-  // Ordena os meses. Para protótipo simples, listamos em ordem cronológica dos próximos meses
-  // Vamos criar um mapeamento dos meses para ordenar
-  const ordemMeses = [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-  ];
-
-  return Object.entries(counts)
-    .map(([name, count]) => {
-      const [mes, ano] = name.split("/");
-      const mesIdx = ordemMeses.indexOf(mes);
-      return { name, count, mesIdx, ano: parseInt(ano) };
-    })
-    .sort((a, b) => {
-      if (a.ano !== b.ano) return a.ano - b.ano;
-      return a.mesIdx - b.mesIdx;
-    })
-    .map((item) => ({
-      mes: item.name,
-      count: item.count,
+  return [...groups.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, employees]) => ({
+      key,
+      label: obterMesExtenso(`${key}-01`),
+      employees: employees.sort((a, b) => a.dataTerminoReal!.localeCompare(b.dataTerminoReal!) || a.nome.localeCompare(b.nome)),
     }));
 }
 
+export function calcularSaidasPorMes(funcionarios: RhEmployee[]): { mes: string; count: number }[] {
+  return agruparSaidasPorMes(funcionarios).map((month) => ({ mes: month.label, count: month.employees.length }));
+}
 /**
  * Gera as frases automáticas para o Resumo Executivo.
  */

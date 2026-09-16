@@ -74,12 +74,12 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
     return (
       <th
         onClick={() => handleSort(field)}
-        className="py-3.5 px-4 text-left text-[10px] font-black uppercase tracking-wider text-slate-400 bg-[#FAF9FF] cursor-pointer select-none transition-colors hover:bg-purple-100/50"
+        className="py-3.5 px-4 text-left text-[10px] font-black uppercase tracking-wider text-slate-400 bg-sky-50/70 cursor-pointer select-none transition-colors hover:bg-sky-100/70"
       >
         <div className="flex items-center gap-1.5">
           <span>{label}</span>
           {isCurrent ? (
-            sortOrder === "asc" ? <ArrowUp className="w-3.5 h-3.5 text-purple-600" /> : <ArrowDown className="w-3.5 h-3.5 text-purple-600" />
+            sortOrder === "asc" ? <ArrowUp className="w-3.5 h-3.5 text-yinmn" /> : <ArrowDown className="w-3.5 h-3.5 text-yinmn" />
           ) : (
             <ArrowUpDown className="w-3.5 h-3.5 text-slate-300 opacity-60" />
           )}
@@ -90,8 +90,8 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
 
   if (employees.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-purple-50/75 p-12 text-center shadow-[0_4px_20px_-4px_rgba(109,40,217,0.04)]">
-        <HelpCircle className="w-12 h-12 text-purple-200 mx-auto mb-3" />
+      <div className="bg-white rounded-xl border border-sky-100 p-12 text-center shadow-[0_4px_20px_-4px_rgba(23,105,170,0.06)]">
+        <HelpCircle className="w-12 h-12 text-sky-200 mx-auto mb-3" />
         <h3 className="text-base font-extrabold text-[#1F1A2C] mb-1">Nenhum funcionário encontrado</h3>
         <p className="text-xs text-slate-400 font-semibold max-w-md mx-auto">
           Não há registros correspondentes aos filtros selecionados. Tente ajustar os parâmetros na barra de pesquisa.
@@ -101,12 +101,12 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-purple-50/70 shadow-[0_4px_20px_-4px_rgba(109,40,217,0.04)] overflow-hidden flex flex-col">
+    <div className="bg-white rounded-xl border border-sky-100 shadow-[0_4px_20px_-4px_rgba(23,105,170,0.06)] overflow-hidden flex flex-col">
       <div className="overflow-x-auto no-scrollbar">
         <table className="w-full min-w-[1100px] border-collapse">
           {/* Header */}
           <thead>
-            <tr className="border-b border-purple-50/55">
+            <tr className="border-b border-sky-100/70">
               <SortHeader field="idFuncionario" label="ID" />
               <SortHeader field="nome" label="Nome" />
               <SortHeader field="cargo" label="Cargo" />
@@ -124,7 +124,7 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
           </thead>
 
           {/* Body */}
-          <tbody className="divide-y divide-purple-50/45">
+          <tbody className="divide-y divide-sky-100">
             {sortedEmployees.map((emp) => {
               const risk = calcularRisco(emp);
               const pendencias = identificarPendencias(emp);
@@ -134,7 +134,7 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
               const isCritical = risk === "Crítico";
               const hasCriticalIssues = pendencias.some((p) => p.severity === "Crítica");
               
-              let rowBg = "hover:bg-purple-50/20";
+              let rowBg = "hover:bg-sky-50/20";
               if (isCritical) {
                 rowBg = "bg-rose-50/30 hover:bg-rose-50/50";
               } else if (hasCriticalIssues) {
@@ -183,7 +183,7 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
                     {emp.idiomas && emp.idiomas.length > 0 ? (
                       <div className="flex gap-1 flex-wrap">
                         {emp.idiomas.slice(0, 2).map((l) => (
-                          <span key={l} className="bg-purple-50 text-purple-700 px-2 py-0.5 rounded-md text-[9px] font-extrabold">
+                          <span key={l} className="bg-sky-50 text-yinmn px-2 py-0.5 rounded-md text-[9px] font-extrabold">
                             {l}
                           </span>
                         ))}
@@ -245,18 +245,18 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
                   </td>
 
                   {/* Ações (sticky col) */}
-                  <td className="py-3.5 px-4 text-center whitespace-nowrap sticky right-0 bg-white group-hover:bg-purple-50/10 z-10 border-l border-purple-50 shadow-l">
+                  <td className="py-3.5 px-4 text-center whitespace-nowrap sticky right-0 bg-white group-hover:bg-sky-50/10 z-10 border-l border-sky-100 shadow-l">
                     <div className="flex items-center justify-center gap-1.5">
                       <button
                         onClick={() => onSelectEmployee(emp)}
-                        className="p-1.5 rounded-lg text-purple-600 hover:bg-purple-50 transition-colors"
+                        className="p-1.5 rounded-lg text-yinmn hover:bg-sky-50 transition-colors"
                         title="Ver ficha completa"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => onEditEmployee(emp)}
-                        className="p-1.5 rounded-lg text-purple-600 hover:bg-purple-50 transition-colors"
+                        className="p-1.5 rounded-lg text-yinmn hover:bg-sky-50 transition-colors"
                         title="Editar cadastro"
                       >
                         <Edit2 className="w-4 h-4" />
@@ -271,15 +271,15 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
       </div>
 
       {/* Table Footer Stats */}
-      <div className="p-4 bg-[#FAF9FF] border-t border-purple-50/50 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+      <div className="p-4 bg-[#FAF9FF] border-t border-sky-100/50 flex flex-col sm:flex-row items-center justify-between gap-2.5">
         <span className="text-xs text-slate-400 font-bold">
           Exibindo {employees.length} de {employees.length} registros filtrados
         </span>
         <div className="flex gap-2">
-          <span className="text-[10px] uppercase font-bold text-slate-400 bg-white border border-purple-100/30 px-2.5 py-1 rounded-lg">
+          <span className="text-[10px] uppercase font-bold text-slate-400 bg-white border border-sky-100 px-2.5 py-1 rounded-lg">
             Admissão Média CTM
           </span>
-          <span className="text-[10px] uppercase font-bold text-slate-400 bg-white border border-purple-100/30 px-2.5 py-1 rounded-lg">
+          <span className="text-[10px] uppercase font-bold text-slate-400 bg-white border border-sky-100 px-2.5 py-1 rounded-lg">
             Ref: 2026
           </span>
         </div>

@@ -107,9 +107,9 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
         </div>
 
         {/* Dynamic Phrases */}
-        <div className="bg-white rounded-2xl p-6 border border-lavender shadow-sm">
+        <div className="bg-white rounded-2xl p-6 border border-sky-100 shadow-sm">
           <h2 className="text-sm font-bold text-oxford mb-4 uppercase tracking-wider flex items-center gap-2">
-            <BarChart className="w-4 h-4 text-purple-600" />
+            <BarChart className="w-4 h-4 text-yinmn" />
             Cenário Atual
           </h2>
           <ul className="space-y-3 text-base text-slate-600 leading-relaxed">
@@ -126,7 +126,7 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
 
         {/* KPIs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-lavender shadow-sm flex flex-col justify-between">
+          <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-slate-500 uppercase">Qualidade dos Dados</span>
               <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
@@ -137,7 +137,7 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
             <p className="text-xs font-medium text-slate-500 mt-2">Cadastros completos</p>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-lavender shadow-sm flex flex-col justify-between">
+          <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-slate-500 uppercase">Férias Críticas</span>
               <div className="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center">
@@ -148,7 +148,7 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
             <p className="text-xs font-medium text-slate-500 mt-2">Instrutores precisam de férias</p>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-lavender shadow-sm flex flex-col justify-between">
+          <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-slate-500 uppercase">Contratos Críticos</span>
               <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center">
@@ -159,11 +159,11 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
             <p className="text-xs font-medium text-slate-500 mt-2">Terminam em &lt; 15 dias</p>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-lavender shadow-sm flex flex-col justify-between">
+          <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-slate-500 uppercase">Substituições</span>
-              <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
-                <UserMinus className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
+                <UserMinus className="w-4 h-4 text-yinmn" />
               </div>
             </div>
             <p className="text-3xl font-black text-oxford">{stats.substPendentes}</p>
@@ -172,7 +172,7 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
         </div>
 
         {/* Recommended Actions */}
-        <div className="bg-white rounded-2xl p-6 border border-lavender shadow-sm">
+        <div className="bg-white rounded-2xl p-6 border border-sky-100 shadow-sm">
           <h2 className="text-sm font-bold text-oxford mb-4 uppercase tracking-wider flex items-center gap-2">
             <ListTodo className="w-4 h-4 text-emerald-600" />
             Ações Recomendadas
@@ -217,8 +217,8 @@ export const ExecutiveSummaryPage: React.FC<Props> = ({ employees }) => {
 
             {stats.substPendentes > 0 && (
               <div className="p-5 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-4 hover:shadow-sm transition-all">
-                <div className="p-3 bg-purple-100/60 rounded-xl shrink-0">
-                  <AlertTriangle className="w-7 h-7 text-purple-600" />
+                <div className="p-3 bg-sky-100/60 rounded-xl shrink-0">
+                  <AlertTriangle className="w-7 h-7 text-yinmn" />
                 </div>
                 <div>
                   <p className="text-base font-bold text-oxford">Definir substitutos para ausências</p>

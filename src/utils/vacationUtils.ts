@@ -165,8 +165,8 @@ export function identificarAlertaFerias(funcionario: RhEmployee) {
   if (status === "Férias em andamento") {
     return {
       level: "Em andamento",
-      color: "bg-purple-50 text-purple-700 border-purple-200",
-      dotColor: "bg-purple-600",
+      color: "bg-sky-50 text-yinmn border-sky-200",
+      dotColor: "bg-yinmn",
       label: "Em andamento"
     };
   }

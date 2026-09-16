@@ -11,5 +11,66 @@
   "localAppUrl": "http://localhost:3000",
   "logoPath": "Default",
   "connectionReferences": {},
-  "databaseReferences": {}
+  "databaseReferences": {
+    "default.cds": {
+      "dataSources": {
+        "employeerecords": {
+          "entitySetName": "ctmbrasi_employeerecordses",
+          "logicalName": "ctmbrasi_employeerecords",
+          "isHidden": false
+        },
+        "rhcontractrenewals": {
+          "entitySetName": "ctmbrasi_rhcontractrenewalses",
+          "logicalName": "ctmbrasi_rhcontractrenewals",
+          "isHidden": false
+        },
+        "rhemployeelanguages": {
+          "entitySetName": "ctmbrasi_rhemployeelanguageses",
+          "logicalName": "ctmbrasi_rhemployeelanguages",
+          "isHidden": false
+        },
+        "rhlanguages": {
+          "entitySetName": "ctmbrasi_rhlanguageses",
+          "logicalName": "ctmbrasi_rhlanguages",
+          "isHidden": false
+        },
+        "rhpositions": {
+          "entitySetName": "ctmbrasi_rhpositionses",
+          "logicalName": "ctmbrasi_rhpositions",
+          "isHidden": false
+        },
+        "rhshifts": {
+          "entitySetName": "ctmbrasi_rhshiftses",
+          "logicalName": "ctmbrasi_rhshifts",
+          "isHidden": false
+        },
+        "rhsubstitutions": {
+          "entitySetName": "ctmbrasi_rhsubstitutionses",
+          "logicalName": "ctmbrasi_rhsubstitutions",
+          "isHidden": false
+        },
+        "rhtimelineevents": {
+          "entitySetName": "ctmbrasi_rhtimelineeventses",
+          "logicalName": "ctmbrasi_rhtimelineevents",
+          "isHidden": false
+        },
+        "rhvacationperiods": {
+          "entitySetName": "ctmbrasi_rhvacationperiodses",
+          "logicalName": "ctmbrasi_rhvacationperiods",
+          "isHidden": false
+        },
+        "rhzones": {
+          "entitySetName": "ctmbrasi_rhzoneses",
+          "logicalName": "ctmbrasi_rhzones",
+          "isHidden": false
+        },
+        "users": {
+          "entitySetName": "systemusers",
+          "logicalName": "systemuser",
+          "isHidden": false
+        }
+      },
+      "environmentVariableName": ""
+    }
+  }
 }

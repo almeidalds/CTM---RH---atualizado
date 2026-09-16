@@ -69,7 +69,7 @@ export const EmployeeSummaryCard: React.FC<EmployeeSummaryCardProps> = ({
   const isCritical = risk === "Crítico";
   const hasCriticalIssues = pendencias.some((p) => p.severity === "Crítica");
 
-  let cardBorder = "border-purple-100";
+  let cardBorder = "border-sky-100";
   let cardBg = "bg-white";
   if (isCritical) {
     cardBorder = "border-rose-200 ring-1 ring-rose-100";
@@ -80,7 +80,7 @@ export const EmployeeSummaryCard: React.FC<EmployeeSummaryCardProps> = ({
   }
 
   return (
-    <div className={`relative p-5 rounded-2xl border ${cardBorder} ${cardBg} shadow-[0_4px_16px_rgba(49,72,122,0.02)] hover:shadow-[0_8px_24px_rgba(49,72,122,0.06)] transition-all duration-300 flex flex-col justify-between min-h-[220px]`}>
+    <div className={`relative p-5 rounded-xl border ${cardBorder} ${cardBg} shadow-[0_4px_16px_rgba(23,105,170,0.04)] hover:shadow-[0_8px_24px_rgba(23,105,170,0.08)] transition-all duration-300 flex flex-col justify-between min-h-[220px]`}>
       
       {/* Crucial Info 1: Header (Nome & Cargo) */}
       <div className="space-y-1">
@@ -96,12 +96,12 @@ export const EmployeeSummaryCard: React.FC<EmployeeSummaryCardProps> = ({
       </div>
 
       {/* Crucial Info 2: Idiomas */}
-      <div className="my-3 py-2 border-t border-b border-purple-50/60">
-        <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block mb-1">Idiomas de Atuação</span>
+      <div className="my-3 py-2 border-t border-b border-sky-100">
+        <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block mb-1">Idiomas</span>
         <div className="flex gap-1.5 flex-wrap">
           {employee.idiomas && employee.idiomas.length > 0 ? (
             employee.idiomas.map((l) => (
-              <span key={l} className="bg-purple-50 text-purple-700 px-2.5 py-0.5 rounded-lg text-[9px] font-black">
+              <span key={l} className="bg-sky-50 text-yinmn px-2.5 py-0.5 rounded-lg text-[9px] font-black">
                 {l}
               </span>
             ))
@@ -138,10 +138,10 @@ export const EmployeeSummaryCard: React.FC<EmployeeSummaryCardProps> = ({
           {isPopoverOpen && (
             <div
               ref={popoverRef}
-              className="absolute right-0 bottom-full mb-2 z-30 w-72 bg-white rounded-2xl border border-purple-100 shadow-[0_12px_32px_rgba(25,35,56,0.15)] p-4 text-xs animate-fadeIn"
+              className="absolute right-0 bottom-full mb-2 z-30 w-72 bg-white rounded-2xl border border-sky-100 shadow-[0_12px_32px_rgba(16,42,67,0.15)] p-4 text-xs animate-fadeIn"
             >
-              <div className="flex items-center justify-between border-b border-purple-50 pb-2 mb-3">
-                <span className="font-black uppercase tracking-wider text-purple-600 text-[9px]">Ficha Técnica Adicional</span>
+              <div className="flex items-center justify-between border-b border-sky-100 pb-2 mb-3">
+                <span className="font-black uppercase tracking-wider text-yinmn text-[9px]">Ficha Técnica Adicional</span>
                 <button onClick={() => setIsPopoverOpen(false)} className="text-slate-400 hover:text-slate-600">
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -170,7 +170,7 @@ export const EmployeeSummaryCard: React.FC<EmployeeSummaryCardProps> = ({
                   </div>
                 </div>
 
-                <div className="border-t border-purple-50/50 pt-2 flex items-center justify-between">
+                <div className="border-t border-sky-100/50 pt-2 flex items-center justify-between">
                   <div>
                     <span className="text-[8px] uppercase font-black text-slate-400 block mb-0.5">Risco de Escala</span>
                     <RiskBadge level={risk} />
@@ -199,13 +199,13 @@ export const EmployeeSummaryCard: React.FC<EmployeeSummaryCardProps> = ({
                 )}
               </div>
 
-              <div className="mt-4 pt-2.5 border-t border-purple-50 flex justify-end gap-1.5">
+              <div className="mt-4 pt-2.5 border-t border-sky-100 flex justify-end gap-1.5">
                 <button
                   onClick={() => {
                     onSelect(employee);
                     setIsPopoverOpen(false);
                   }}
-                  className="p-1.5 rounded-lg text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors"
+                  className="p-1.5 rounded-lg text-yinmn bg-sky-50 hover:bg-sky-100 transition-colors"
                   title="Ficha Completa"
                 >
                   <Eye className="w-4 h-4" />
@@ -215,7 +215,7 @@ export const EmployeeSummaryCard: React.FC<EmployeeSummaryCardProps> = ({
                     onEdit(employee);
                     setIsPopoverOpen(false);
                   }}
-                  className="p-1.5 rounded-lg text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors"
+                  className="p-1.5 rounded-lg text-yinmn bg-sky-50 hover:bg-sky-100 transition-colors"
                   title="Editar Ficha"
                 >
                   <Edit2 className="w-4 h-4" />
@@ -254,7 +254,7 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
 
   const isCritical = risco.label === "Crítico";
 
-  let cardBorder = "border-purple-100";
+  let cardBorder = "border-sky-100";
   let cardBg = "bg-white";
   if (isCritical) {
     cardBorder = "border-rose-200 ring-1 ring-rose-100";
@@ -262,7 +262,7 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
   }
 
   return (
-    <div className={`relative p-5 rounded-2xl border ${cardBorder} ${cardBg} shadow-[0_4px_16px_rgba(49,72,122,0.02)] hover:shadow-[0_8px_24px_rgba(49,72,122,0.06)] transition-all duration-300 flex flex-col justify-between min-h-[220px]`}>
+    <div className={`relative p-5 rounded-2xl border ${cardBorder} ${cardBg} shadow-[0_4px_16px_rgba(23,105,170,0.02)] hover:shadow-[0_8px_24px_rgba(23,105,170,0.06)] transition-all duration-300 flex flex-col justify-between min-h-[220px]`}>
       
       {/* Crucial Info 1: Header (Ausente & Motivo) */}
       <div className="space-y-1">
@@ -271,7 +271,7 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
             <h4 className="text-sm font-extrabold text-oxford truncate" title={substitution.instrutorAusente}>
               {substitution.instrutorAusente}
             </h4>
-            <span className="inline-block px-2 py-0.5 rounded bg-purple-50 text-purple-600 text-[9px] font-black uppercase mt-1">
+            <span className="inline-block px-2 py-0.5 rounded bg-sky-50 text-yinmn text-[9px] font-black uppercase mt-1">
               {substitution.motivo}
             </span>
           </div>
@@ -288,14 +288,14 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
       </div>
 
       {/* Crucial Info 2: Período de Ausência */}
-      <div className="my-3 py-2 border-t border-b border-purple-50/60 flex justify-between items-center text-xs">
+      <div className="my-3 py-2 border-t border-b border-sky-100 flex justify-between items-center text-xs">
         <div>
           <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block">Período</span>
           <p className="font-extrabold text-slate-600">{formatarDataBR(substitution.dataInicio)} - {formatarDataBR(substitution.dataFim)}</p>
         </div>
         <div className="text-right">
           <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block">Duração</span>
-          <p className="font-black text-purple-700">{substitution.dias} dias</p>
+          <p className="font-black text-yinmn">{substitution.dias} dias</p>
         </div>
       </div>
 
@@ -304,7 +304,7 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
         <div className="min-w-0">
           <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block">Substituto</span>
           {substitution.substituto ? (
-            <div className="font-extrabold text-purple-700 flex items-center gap-1 mt-0.5 text-xs">
+            <div className="font-extrabold text-yinmn flex items-center gap-1 mt-0.5 text-xs">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
               <span className="truncate">{substitution.substituto}</span>
             </div>
@@ -332,10 +332,10 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
           {isPopoverOpen && (
             <div
               ref={popoverRef}
-              className="absolute right-0 bottom-full mb-2 z-30 w-72 bg-white rounded-2xl border border-purple-100 shadow-[0_12px_32px_rgba(25,35,56,0.15)] p-4 text-xs animate-fadeIn"
+              className="absolute right-0 bottom-full mb-2 z-30 w-72 bg-white rounded-2xl border border-sky-100 shadow-[0_12px_32px_rgba(16,42,67,0.15)] p-4 text-xs animate-fadeIn"
             >
-              <div className="flex items-center justify-between border-b border-purple-50 pb-2 mb-3">
-                <span className="font-black uppercase tracking-wider text-purple-600 text-[9px]">Fatores Técnicos de Cobertura</span>
+              <div className="flex items-center justify-between border-b border-sky-100 pb-2 mb-3">
+                <span className="font-black uppercase tracking-wider text-yinmn text-[9px]">Fatores Técnicos de Cobertura</span>
                 <button onClick={() => setIsPopoverOpen(false)} className="text-slate-400 hover:text-slate-600">
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -371,7 +371,7 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
                 </div>
 
                 {substitution.observacoes && (
-                  <div className="bg-slate-50 p-2.5 border border-purple-100/40 rounded-xl space-y-1">
+                  <div className="bg-slate-50 p-2.5 border border-sky-100 rounded-xl space-y-1">
                     <span className="text-[8px] uppercase font-black text-slate-400 block">Notas Internas:</span>
                     <p className="text-[10px] text-slate-500 font-medium leading-relaxed italic">
                       "{substitution.observacoes}"
@@ -380,13 +380,13 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
                 )}
               </div>
 
-              <div className="mt-4 pt-2.5 border-t border-purple-50 flex justify-end gap-1.5">
+              <div className="mt-4 pt-2.5 border-t border-sky-100 flex justify-end gap-1.5">
                 <button
                   onClick={() => {
                     onOpenRecommender(substitution);
                     setIsPopoverOpen(false);
                   }}
-                  className="p-1.5 rounded-lg text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors"
+                  className="p-1.5 rounded-lg text-yinmn bg-sky-50 hover:bg-sky-100 transition-colors"
                   title="Sugerir Substituto com Inteligência"
                 >
                   <Languages className="w-4 h-4" />
@@ -396,7 +396,7 @@ export const SubstitutionSummaryCard: React.FC<SubstitutionSummaryCardProps> = (
                     onEdit(substitution);
                     setIsPopoverOpen(false);
                   }}
-                  className="p-1.5 rounded-lg text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors"
+                  className="p-1.5 rounded-lg text-yinmn bg-sky-50 hover:bg-sky-100 transition-colors"
                   title="Editar"
                 >
                   <Edit className="w-4 h-4" />
@@ -447,7 +447,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
 
   const isCritical = risco.label === "Crítico";
 
-  let cardBorder = "border-purple-100";
+  let cardBorder = "border-sky-100";
   let cardBg = "bg-white";
   if (isCritical) {
     cardBorder = "border-rose-200 ring-1 ring-rose-100";
@@ -457,7 +457,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
   const originalEmployee = employees.find((e) => e.recordId === contract.recordId);
 
   return (
-    <div className={`relative p-5 rounded-2xl border ${cardBorder} ${cardBg} shadow-[0_4px_16px_rgba(49,72,122,0.02)] hover:shadow-[0_8px_24px_rgba(49,72,122,0.06)] transition-all duration-300 flex flex-col justify-between min-h-[220px]`}>
+    <div className={`relative p-5 rounded-2xl border ${cardBorder} ${cardBg} shadow-[0_4px_16px_rgba(23,105,170,0.02)] hover:shadow-[0_8px_24px_rgba(23,105,170,0.06)] transition-all duration-300 flex flex-col justify-between min-h-[220px]`}>
       
       {/* Crucial Info 1: Header (Nome & Cargo) */}
       <div className="space-y-1">
@@ -487,7 +487,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
       </div>
 
       {/* Crucial Info 2: Término & Dias Restantes */}
-      <div className="my-3 py-2 border-t border-b border-purple-50/60 flex justify-between items-center text-xs">
+      <div className="my-3 py-2 border-t border-b border-sky-100 flex justify-between items-center text-xs">
         <div>
           <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block">Data Término</span>
           <p className="font-extrabold text-slate-700">
@@ -502,7 +502,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
         </div>
       </div>
 
-      {/* Crucial Info 3: Risco Contratual */}
+      {/* Crucial Info 3: Status */}
       <div className="flex items-center justify-between gap-2">
         <div className="min-w-0">
           <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block">Risco Legal</span>
@@ -525,10 +525,10 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
           {isPopoverOpen && (
             <div
               ref={popoverRef}
-              className="absolute right-0 bottom-full mb-2 z-30 w-72 bg-white rounded-2xl border border-purple-100 shadow-[0_12px_32px_rgba(25,35,56,0.15)] p-4 text-xs animate-fadeIn"
+              className="absolute right-0 bottom-full mb-2 z-30 w-72 bg-white rounded-2xl border border-sky-100 shadow-[0_12px_32px_rgba(16,42,67,0.15)] p-4 text-xs animate-fadeIn"
             >
-              <div className="flex items-center justify-between border-b border-purple-50 pb-2 mb-3">
-                <span className="font-black uppercase tracking-wider text-purple-600 text-[9px]">Ficha Contratual</span>
+              <div className="flex items-center justify-between border-b border-sky-100 pb-2 mb-3">
+                <span className="font-black uppercase tracking-wider text-yinmn text-[9px]">Ficha Contratual</span>
                 <button onClick={() => setIsPopoverOpen(false)} className="text-slate-400 hover:text-slate-600">
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -558,7 +558,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
                 </div>
 
                 {contract.observacoes && (
-                  <div className="bg-slate-50 p-2 border border-purple-100/40 rounded-xl space-y-0.5 text-[9px]">
+                  <div className="bg-slate-50 p-2 border border-sky-100 rounded-xl space-y-0.5 text-[9px]">
                     <span className="uppercase font-black text-slate-400 block tracking-wider">Parecer/Opinião:</span>
                     <p className="text-slate-500 leading-relaxed font-semibold italic">"{contract.observacoes}"</p>
                   </div>
@@ -566,7 +566,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
               </div>
 
               {/* Action Buttons inside Popover */}
-              <div className="mt-4 pt-2.5 border-t border-purple-50 flex flex-wrap gap-1 justify-end">
+              <div className="mt-4 pt-2.5 border-t border-sky-100 flex flex-wrap gap-1 justify-end">
                 <button
                   onClick={() => {
                     onUpdateStatus(contract, "Em análise");
@@ -608,7 +608,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
                     onOpenParecer(contract);
                     setIsPopoverOpen(false);
                   }}
-                  className="text-[8px] bg-purple-50 hover:bg-purple-100 text-purple-700 px-2 py-1 rounded border border-purple-200 font-black"
+                  className="text-[8px] bg-sky-50 hover:bg-sky-100 text-yinmn px-2 py-1 rounded border border-sky-200 font-black"
                 >
                   Opinião
                 </button>

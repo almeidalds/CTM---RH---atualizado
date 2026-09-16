@@ -21,7 +21,7 @@ export const RiskBadge: React.FC<RiskBadgeProps> = ({ level }) => {
       badgeStyles = "bg-amber-50 text-[#F59E0B] border-amber-200 font-semibold";
       break;
     case "Médio":
-      badgeStyles = "bg-purple-50 text-[#6B4CFF] border-purple-200 font-medium";
+      badgeStyles = "bg-sky-50 text-yinmn border-sky-200 font-medium";
       break;
     case "Baixo":
       badgeStyles = "bg-blue-50 text-blue-700 border-blue-200";

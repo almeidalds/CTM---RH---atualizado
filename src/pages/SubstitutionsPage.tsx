@@ -314,11 +314,11 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Page Title & Button */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-purple-100/30 pb-4 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-sky-100 pb-4 gap-4">
         <div>
           <h2 className="text-lg sm:text-xl font-extrabold text-[#1F1A2C] flex items-center gap-2.5">
-            <RefreshCw className="w-5 h-5 text-purple-600" />
-            <span>Controle de Substituições Docentes</span>
+            <RefreshCw className="w-5 h-5 text-yinmn" />
+            <span>Controle de Substituições Funcionários</span>
           </h2>
           <p className="text-xs text-slate-400 font-medium mt-1">
             Planeje coberturas de aulas para afastamentos e férias de professores de forma automatizada e inteligente.
@@ -329,7 +329,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
             resetForm();
             setIsFormOpen(true);
           }}
-          className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-black py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-purple-200 transition-all select-none"
+          className="bg-yinmn hover:bg-yinmn text-white text-xs font-black py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-blue-200 transition-all select-none"
         >
           <Plus className="w-4 h-4" />
           <span>Registrar Afastamento</span>
@@ -353,9 +353,9 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
           <span className="text-lg font-extrabold text-blue-900 block mt-0.5">{totalEmAndamento}</span>
         </div>
 
-        <div className="p-3.5 bg-purple-50 rounded-2xl border border-purple-100">
-          <span className="text-[9px] uppercase font-black text-purple-600 tracking-wider block">Futuras</span>
-          <span className="text-lg font-extrabold text-purple-900 block mt-0.5">{totalFuturas}</span>
+        <div className="p-3.5 bg-sky-50 rounded-2xl border border-sky-100">
+          <span className="text-[9px] uppercase font-black text-yinmn tracking-wider block">Futuras</span>
+          <span className="text-lg font-extrabold text-oxford block mt-0.5">{totalFuturas}</span>
         </div>
 
         <div className="p-3.5 bg-red-100/70 rounded-2xl border border-red-200">
@@ -375,7 +375,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
       </div>
 
       {/* Filtros e Busca */}
-      <div className="bg-white p-4 rounded-2xl border border-purple-50/70 shadow-sm flex flex-col md:flex-row gap-3">
+      <div className="bg-white p-4 rounded-2xl border border-sky-100 shadow-sm flex flex-col md:flex-row gap-3">
         <div className="flex-1 relative">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
@@ -383,13 +383,13 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
             placeholder="Buscar por instrutor ausente, substituto ou idioma..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full text-xs pl-10 pr-4 py-2.5 rounded-xl border border-purple-100/80 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-slate-700"
+            className="w-full text-xs pl-10 pr-4 py-2.5 rounded-xl border border-sky-100 focus:outline-none focus:border-jordy focus:ring-1 focus:ring-jordy text-slate-700"
           />
         </div>
         
         <div className="flex gap-2">
           {/* Motivo */}
-          <div className="flex items-center gap-1.5 bg-slate-50 border border-purple-100/40 rounded-xl px-2.5 py-1.5 shrink-0">
+          <div className="flex items-center gap-1.5 bg-slate-50 border border-sky-100 rounded-xl px-2.5 py-1.5 shrink-0">
             <Filter className="w-3.5 h-3.5 text-slate-400" />
             <select
               value={selectedReason}
@@ -404,7 +404,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
           </div>
 
           {/* Status */}
-          <div className="flex items-center gap-1.5 bg-slate-50 border border-purple-100/40 rounded-xl px-2.5 py-1.5 shrink-0">
+          <div className="flex items-center gap-1.5 bg-slate-50 border border-sky-100 rounded-xl px-2.5 py-1.5 shrink-0">
             <Filter className="w-3.5 h-3.5 text-slate-400" />
             <select
               value={selectedStatus}
@@ -422,7 +422,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
 
       {/* Cards de Substituições - Responsive Card Grid */}
       {filteredSubs.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-purple-100/40 shadow-sm p-12 text-center">
+        <div className="bg-white rounded-2xl border border-sky-100 shadow-sm p-12 text-center">
           <AlertTriangle className="w-10 h-10 text-slate-300 mx-auto mb-3 animate-bounce" />
           <h3 className="text-base font-extrabold text-[#1F1A2C] mb-1">Nenhum afastamento ou substituição</h3>
           <p className="text-xs text-slate-400 max-w-sm mx-auto">
@@ -464,7 +464,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
       {/* FLYOUT MODAL 1 - FORMULÁRIO DE AFASTAMENTO */}
       {isFormOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-purple-100 max-w-lg w-full p-6 shadow-2xl relative">
+          <div className="bg-white rounded-2xl border border-sky-100 max-w-lg w-full p-6 shadow-2xl relative">
             <h3 className="text-sm font-black uppercase tracking-wider text-[#1F1A2C] mb-4">
               Registrar Ausência / Afastamento Temporário
             </h3>
@@ -484,7 +484,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                         setFormShift(matchingEmployee.turno || "");
                       }
                     }}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-bold focus:outline-none focus:border-purple-400"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-bold focus:outline-none focus:border-jordy"
                     required
                   >
                     <option value="">Selecione o funcionário...</option>
@@ -499,7 +499,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                   <select
                     value={formReason}
                     onChange={(e) => setFormReason(e.target.value as SubstitutionReason)}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-bold focus:outline-none"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-bold focus:outline-none"
                   >
                     {motivos.map((m) => (
                       <option key={m} value={m}>{m}</option>
@@ -512,7 +512,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                   <select
                     value={formLanguage}
                     onChange={(e) => setFormLanguage(e.target.value)}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                   >
                     <option value="">Selecione o idioma...</option>
                     {appSettings.idiomas.map((i) => (
@@ -527,7 +527,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                     type="date"
                     value={formStart}
                     onChange={(e) => setFormStart(e.target.value)}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                     required
                   />
                 </div>
@@ -538,7 +538,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                     type="date"
                     value={formEnd}
                     onChange={(e) => setFormEnd(e.target.value)}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                     required
                   />
                 </div>
@@ -548,7 +548,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                   <select
                     value={formZone}
                     onChange={(e) => setFormZone(e.target.value)}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                   >
                     <option value="">Selecione a zona...</option>
                     {appSettings.zonas.map((z) => (
@@ -562,7 +562,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                   <select
                     value={formShift}
                     onChange={(e) => setFormShift(e.target.value)}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                   >
                     <option value="">Selecione o turno...</option>
                     <option value="Manhã">Manhã</option>
@@ -576,7 +576,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                   <select
                     value={formSub}
                     onChange={(e) => setFormSub(e.target.value)}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                   >
                     <option value="">Nenhum - Cobertura pendente</option>
                     {employees.filter(e => e.statusFuncionario === "Ativo" && e.nome !== formAbsentName).map((emp) => (
@@ -590,7 +590,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                   <select
                     value={formStatus}
                     onChange={(e) => setFormStatus(e.target.value as SubstitutionStatus)}
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-bold"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-bold"
                   >
                     {statusList.map((st) => (
                       <option key={st} value={st}>{st}</option>
@@ -605,13 +605,13 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                     onChange={(e) => setFormNotes(e.target.value)}
                     rows={3}
                     placeholder="Observações complementares ou diretrizes de cobertura..."
-                    className="w-full p-2.5 bg-slate-50 border border-purple-100 rounded-xl font-semibold"
+                    className="w-full p-2.5 bg-slate-50 border border-sky-100 rounded-xl font-semibold"
                   />
                 </div>
               </div>
 
               {/* Botões do Modal */}
-              <div className="pt-4 flex justify-end gap-2 border-t border-purple-50">
+              <div className="pt-4 flex justify-end gap-2 border-t border-sky-100">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
@@ -621,7 +621,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-2.5 px-4 rounded-xl shadow-md"
+                  className="bg-yinmn hover:bg-yinmn text-white font-extrabold py-2.5 px-4 rounded-xl shadow-md"
                 >
                   Salvar Substituição
                 </button>
@@ -634,14 +634,14 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
       {/* FLYOUT MODAL 2 - RECOMENDADOR DE SUBSTITUTOS INTELIGENTES */}
       {isRecommenderOpen && activeSubForRecommendation && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl border border-purple-100 max-w-2xl w-full p-6 shadow-2xl relative flex flex-col max-h-[90vh]">
+          <div className="bg-white rounded-3xl border border-sky-100 max-w-2xl w-full p-6 shadow-2xl relative flex flex-col max-h-[90vh]">
             {/* Modal Header */}
-            <div className="border-b border-purple-50 pb-3 mb-4">
-              <span className="text-[10px] uppercase font-black text-purple-600 tracking-wider">
+            <div className="border-b border-sky-100 pb-3 mb-4">
+              <span className="text-[10px] uppercase font-black text-yinmn tracking-wider">
                 Motor de Sugestão de Cobertura
               </span>
               <h3 className="text-sm font-black text-[#1F1A2C] mt-1">
-                Recomendando Substituto para: <span className="text-purple-700">{activeSubForRecommendation.instrutorAusente}</span>
+                Recomendando Substituto para: <span className="text-yinmn">{activeSubForRecommendation.instrutorAusente}</span>
               </h3>
               <p className="text-[11px] text-slate-400 font-semibold mt-1">
                 Ausência programada por {activeSubForRecommendation.motivo} ({activeSubForRecommendation.dias} dias: {formatarDataBR(activeSubForRecommendation.dataInicio)} - {formatarDataBR(activeSubForRecommendation.dataFim)}) no idioma <span className="text-slate-700 font-bold">{activeSubForRecommendation.idioma}</span>, turno {activeSubForRecommendation.turno} na {activeSubForRecommendation.zona}.
@@ -657,7 +657,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                     key={item.emp.recordId}
                     className={`p-4 rounded-2xl border transition-all duration-300 flex items-center justify-between gap-4 ${
                       isTopMatch
-                        ? "bg-purple-50/25 border-purple-100 hover:border-purple-300"
+                        ? "bg-sky-50/25 border-sky-100 hover:border-sky-300"
                         : "bg-slate-50/55 border-slate-100 hover:border-slate-300"
                     }`}
                   >
@@ -733,7 +733,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
                         item.conflitoFerias || item.conflitoSub
                           ? "bg-slate-100 text-slate-400 cursor-not-allowed"
                           : isTopMatch
-                          ? "bg-purple-600 hover:bg-purple-700 text-white shadow-md shadow-purple-200"
+                          ? "bg-yinmn hover:bg-yinmn text-white shadow-md shadow-blue-200"
                           : "bg-slate-200 hover:bg-slate-300 text-slate-700"
                       }`}
                     >
@@ -745,7 +745,7 @@ export const SubstitutionsPage: React.FC<SubstitutionsPageProps> = ({
             </div>
 
             {/* Modal Footer */}
-            <div className="pt-4 border-t border-purple-50 mt-4 flex justify-between items-center text-[10px] text-slate-400 font-medium">
+            <div className="pt-4 border-t border-sky-100 mt-4 flex justify-between items-center text-[10px] text-slate-400 font-medium">
               <span>* Prioriza mesma especialização linguística, horário acadêmico e proximidade de campus.</span>
               <button
                 onClick={() => {

@@ -2,199 +2,120 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
-  BarChart3,
-  Users2,
-  AlertTriangle,
-  Calendar,
-  LifeBuoy,
-  Settings,
-  RotateCcw,
-  X,
-  Sparkles
+  BarChart3, Users2, CalendarDays, Settings,
+  X, Sparkles, PanelLeftClose, PanelLeftOpen,
+  FolderSync, ArrowLeftRight, UserRoundPlus, ShieldAlert, FileClock, Bell,
 } from "lucide-react";
 
-export type TabId =
-  | "dashboard"
-  | "team"
-  | "schedule"
-  | "risks"
-  | "settings";
-
-interface TabItem {
-  id: TabId;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  badgeCount?: number;
-  badgeColor?: "red" | "amber" | "blue" | "gray" | "purple";
-}
+export type TabId = "dashboard" | "team" | "schedule" | "risks" | "settings";
+type TeamTab = "list" | "pending";
+type ScheduleTab = "vacations" | "substitutions" | "replacement";
+type RisksTab = "heatmap" | "contracts" | "alerts";
 
 interface NavigationTabsProps {
   activeTab: TabId;
   setActiveTab: (tab: TabId) => void;
+  teamSubTab: TeamTab;
+  scheduleSubTab: ScheduleTab;
+  risksSubTab: RisksTab;
+  setTeamSubTab: (tab: TeamTab) => void;
+  setScheduleSubTab: (tab: ScheduleTab) => void;
+  setRisksSubTab: (tab: RisksTab) => void;
   pendingCount: number;
   criticalRiskCount: number;
   criticalVacationCount: number;
   systemAlertCount: number;
   isOpen: boolean;
+  isCollapsed: boolean;
   onClose: () => void;
-  onResetData: () => void;
+  onToggleCollapse: () => void;
 }
 
-export const NavigationTabs: React.FC<NavigationTabsProps> = ({
-  activeTab,
-  setActiveTab,
-  pendingCount,
-  criticalRiskCount,
-  criticalVacationCount,
-  systemAlertCount,
-  isOpen,
-  onClose,
-  onResetData,
-}) => {
-  const tabs: TabItem[] = [
-    { 
-      id: "dashboard", 
-      label: "Dashboard", 
-      icon: BarChart3 
-    },
-    { 
-      id: "team", 
-      label: "Equipe & Integridade", 
-      icon: Users2,
-      badgeCount: pendingCount > 0 ? pendingCount : undefined,
-      badgeColor: "amber"
-    },
-    { 
-      id: "schedule", 
-      label: "Escala & Ausências", 
-      icon: Calendar,
-      badgeCount: criticalVacationCount > 0 ? criticalVacationCount : undefined,
-      badgeColor: "purple"
-    },
-    {
-      id: "risks",
-      label: "Riscos & Contratos",
-      icon: AlertTriangle,
-      badgeCount: systemAlertCount > 0 ? systemAlertCount : undefined,
-      badgeColor: "red"
-    },
-    {
-      id: "settings",
-      label: "Configurações",
-      icon: Settings
-    }
-  ];
+interface MenuItem {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  active?: boolean;
+  count?: number;
+  action: () => void;
+}
 
-  const handleTabClick = (tabId: TabId) => {
-    setActiveTab(tabId);
-    onClose();
+export const NavigationTabs: React.FC<NavigationTabsProps> = (props) => {
+  const drawer = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = drawer.current;
+    if (!dialog) return;
+    if (!props.isOpen) { dialog.close(); return; }
+    const previousFocus = document.activeElement as HTMLElement | null;
+    dialog.showModal();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const closeOnDesktop = () => { if (desktop.matches) props.onClose(); };
+    desktop.addEventListener("change", closeOnDesktop);
+    closeOnDesktop();
+    return () => {
+      desktop.removeEventListener("change", closeOnDesktop);
+      document.body.style.overflow = previousOverflow;
+      dialog.close();
+      previousFocus?.focus();
+    };
+  }, [props.isOpen, props.onClose]);
+
+  const navigate = (tab: TabId, select?: () => void) => () => {
+    select?.();
+    props.setActiveTab(tab);
+    props.onClose();
   };
-
-  const sidebarContent = (
-    <div className="flex flex-col h-full bg-white text-oxford border-r border-lavender p-6 justify-between">
-      <div>
-        {/* Brand Logo & Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-yinmn to-oxford rounded-xl flex items-center justify-center shadow-md shadow-jordy/20">
-              <Sparkles className="w-5 h-5 text-jordy animate-pulse" />
-            </div>
-            <div>
-              <h1 className="text-lg font-extrabold tracking-tight text-oxford leading-none flex items-center gap-0.5">
-                CTM RH
-              </h1>
-              <span className="text-[9px] text-slate-400 font-bold tracking-wider uppercase mt-1 block">
-                Dashboard
-              </span>
-            </div>
-          </div>
-          {/* Mobile Close Button */}
-          <button
-            onClick={onClose}
-            className="md:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Main Navigation Menu */}
-        <div className="space-y-1.5">
-          <p className="text-[10px] font-black text-slate-400 tracking-widest uppercase mb-3 px-3">
-            MENU
-          </p>
-          <nav className="space-y-1">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabClick(tab.id)}
-                  className={`w-full flex items-center justify-between py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 select-none group relative cursor-pointer ${
-                    isActive
-                      ? "bg-lavender/30 text-oxford"
-                      : "text-slate-400 hover:text-oxford hover:bg-lavender/10"
-                  }`}
-                >
-                  {/* Left accent bar for active tab, matching the image */}
-                  {isActive && (
-                    <div className="absolute left-0 top-[25%] h-1/2 w-1.5 bg-yinmn rounded-r-md" />
-                  )}
-
-                  <div className="flex items-center gap-3">
-                    <Icon className={`w-4.5 h-4.5 transition-transform duration-200 group-hover:scale-110 ${isActive ? "text-yinmn" : "text-slate-400 group-hover:text-jordy"}`} />
-                    <span className={isActive ? "font-extrabold" : "font-semibold"}>{tab.label}</span>
-                  </div>
-                  
-                  {tab.badgeCount !== undefined && tab.badgeCount > 0 && (
-                    <span
-                      className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[9px] font-black leading-none ${
-                        tab.badgeColor === "red"
-                          ? "bg-rose-500 text-white animate-pulse"
-                          : tab.badgeColor === "purple"
-                          ? "bg-yinmn text-white"
-                          : "bg-amber-500 text-white"
-                      }`}
-                    >
-                      {tab.badgeCount}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-
+  const groups: { label: string; items: MenuItem[] }[] = [
+    { label: "Visão geral", items: [
+      { label: "Relatórios", icon: BarChart3, active: props.activeTab === "dashboard", action: navigate("dashboard") },
+    ] },
+    { label: "Equipe e cadastros", items: [
+      { label: "Colaboradores", icon: Users2, active: props.activeTab === "team" && props.teamSubTab === "list", action: navigate("team", () => props.setTeamSubTab("list")) },
+      { label: "Pendências cadastrais", icon: FolderSync, count: props.pendingCount, active: props.activeTab === "team" && props.teamSubTab === "pending", action: navigate("team", () => props.setTeamSubTab("pending")) },
+    ] },
+    { label: "Escalas e ausências", items: [
+      { label: "Controle de férias", icon: CalendarDays, count: props.criticalVacationCount, active: props.activeTab === "schedule" && props.scheduleSubTab === "vacations", action: navigate("schedule", () => props.setScheduleSubTab("vacations")) },
+      { label: "Substituições", icon: ArrowLeftRight, active: props.activeTab === "schedule" && props.scheduleSubTab === "substitutions", action: navigate("schedule", () => props.setScheduleSubTab("substitutions")) },
+      { label: "Simular reposições", icon: UserRoundPlus, active: props.activeTab === "schedule" && props.scheduleSubTab === "replacement", action: navigate("schedule", () => props.setScheduleSubTab("replacement")) },
+    ] },
+    { label: "Riscos e contratos", items: [
+      { label: "Análise preditiva", icon: ShieldAlert, count: props.criticalRiskCount, active: props.activeTab === "risks" && props.risksSubTab === "heatmap", action: navigate("risks", () => props.setRisksSubTab("heatmap")) },
+      { label: "Prazos contratuais", icon: FileClock, active: props.activeTab === "risks" && props.risksSubTab === "contracts", action: navigate("risks", () => props.setRisksSubTab("contracts")) },
+      { label: "Painel de alertas", icon: Bell, count: props.systemAlertCount, active: props.activeTab === "risks" && props.risksSubTab === "alerts", action: navigate("risks", () => props.setRisksSubTab("alerts")) },
+    ] },
+    { label: "Sistema", items: [
+      { label: "Configurações", icon: Settings, active: props.activeTab === "settings", action: navigate("settings") },
+    ] },
+  ];
+  const focusStyle = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yinmn focus-visible:ring-offset-2";
+  const content = (collapsed: boolean, mobile = false) => (
+    <div className="flex h-full min-h-0 flex-col border-r border-sky-100 bg-white text-oxford">
+      <div className={`flex shrink-0 items-center gap-3 border-b border-sky-100 p-4 ${collapsed ? "flex-col" : ""}`}>
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-yinmn text-white shadow-sm"><Sparkles className="h-5 w-5" /></div>
+        {!collapsed && <div className="min-w-0 flex-1"><p className="text-base font-extrabold tracking-tight">RH · CTM</p><p className="mt-0.5 text-[11px] text-slate-500">Gestão de pessoas</p></div>}
+        <button type="button" onClick={mobile ? props.onClose : props.onToggleCollapse} aria-label={mobile ? "Fechar menu" : collapsed ? "Expandir barra lateral" : "Recolher barra lateral"} title={mobile ? "Fechar menu" : collapsed ? "Expandir barra lateral" : "Recolher barra lateral"} className={`rounded-lg p-2 text-slate-500 hover:bg-sky-50 hover:text-yinmn ${focusStyle}`}>
+          {mobile ? <X className="h-4 w-4" /> : collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
+        </button>
       </div>
-
+      <nav aria-label="Navegação principal" className="min-h-0 flex-1 space-y-4 overflow-y-auto px-3 py-5">
+        {groups.map((group, index) => <div key={group.label} role="group" aria-label={group.label} className={collapsed && index > 0 ? "border-t border-sky-100 pt-3" : ""}>
+          <p className={collapsed ? "sr-only" : "mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-500"}>{group.label}</p>
+          <div className="space-y-1">{group.items.map((item) => <button key={item.label} type="button" onClick={item.action} aria-current={item.active ? "page" : undefined} title={collapsed ? `${item.label}${item.count ? ` (${item.count})` : ""}` : undefined} className={`relative flex min-h-10 w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-xs transition-colors ${focusStyle} ${collapsed ? "justify-center" : ""} ${item.active ? "bg-yinmn font-bold text-white shadow-sm" : "font-medium text-slate-600 hover:bg-sky-50 hover:text-yinmn"}`}>
+            <item.icon className="h-4 w-4 shrink-0" />
+            <span className={collapsed ? "sr-only" : "flex-1"}>{item.label}</span>
+            {!!item.count && <span className={collapsed ? "absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-amber-400 ring-2 ring-white" : `rounded-md px-1.5 py-0.5 text-[10px] font-bold ${item.active ? "bg-white/20 text-white" : "bg-amber-50 text-amber-800"}`}><span className={collapsed ? "sr-only" : ""}>{item.count}<span className="sr-only"> ocorrências</span></span></span>}
+          </button>)}</div>
+        </div>)}
+      </nav>
     </div>
   );
-
-  return (
-    <>
-      {/* Desktop Fixed Sidebar */}
-      <aside className="hidden md:block w-64 h-screen sticky top-0 shrink-0 overflow-y-auto no-scrollbar">
-        {sidebarContent}
-      </aside>
-
-      {/* Mobile Drawer Sidebar Overlay */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 md:hidden flex">
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
-            onClick={onClose}
-          />
-          {/* Drawer Body */}
-          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-[#FAF9FF] focus:outline-none transition-transform duration-300 ease-in-out transform translate-x-0">
-            {sidebarContent}
-          </div>
-        </div>
-      )}
-    </>
-  );
+  return <>
+    <aside aria-label="Barra lateral" className={`sticky top-0 hidden h-dvh shrink-0 transition-[width] duration-200 motion-reduce:transition-none md:block ${props.isCollapsed ? "w-[76px]" : "w-64 lg:w-72"}`}>{content(props.isCollapsed)}</aside>
+    <dialog ref={drawer} aria-label="Menu de navegação" onCancel={props.onClose} onClick={(event) => { if (event.target === event.currentTarget) props.onClose(); }} className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm md:hidden">
+      <div className="h-full w-[min(20rem,88vw)] shadow-xl">{content(false, true)}</div>
+    </dialog>
+  </>;
 };
